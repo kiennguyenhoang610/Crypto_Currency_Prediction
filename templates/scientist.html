@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <title>Data Scientist Control Panel</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f0f2f5; color: #333; }
+        
+        /* Topbar */
+        .topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .topbar .logo h2 { color: #2b5876; margin: 0; display: flex; align-items: center; gap: 10px;}
+        
+        /* Topbar Right Section */
+        .topbar-right { display: flex; align-items: center; gap: 25px; }
+        .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; transition: 0.3s; }
+        .btn-logout:hover { color: #c0392b; }
+        .user { background: #e0eafc; padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2b5876; font-weight: 600;}
+        
+        /* Main Layout */
+        .main { padding: 40px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 3fr 5fr; gap: 30px;}
+        
+        /* Panel Section */
+        .panel { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .panel-title { font-size: 20px; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;}
+        
+        /* Metrics Display */
+        .metrics-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 25px; }
+        .metric-box { padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #eee; }
+        .metric-box.dt { border-left: 5px solid #e74c3c; background: #fdf5f4; }
+        .metric-box.rf { border-left: 5px solid #27ae60; background: #f4fbf7; }
+        .metric-title { font-size: 14px; color: #7f8c8d; margin-bottom: 10px; font-weight: 500;}
+        .metric-value { font-size: 32px; font-weight: 700; color: #2c3e50; }
+        
+        /* Status & Retrain Form */
+        .status-box { background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; border: 1px dashed #ccc;}
+        .status-box p { color: #666; margin-bottom: 20px; font-size: 15px;}
+        
+        .btn-retrain { background: linear-gradient(45deg, #2b5876, #4e4376); color: white; border: none; padding: 15px 30px; font-size: 16px; font-weight: 600; border-radius: 30px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(78, 67, 118, 0.4); display: flex; align-items: center; gap: 10px; margin: 0 auto;}
+        .btn-retrain:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(78, 67, 118, 0.6); }
+        
+        /* Loading Overlay */
+        #loading { display: none; margin-top: 15px; color: #2b5876; font-weight: 500;}
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* UPLOAD AND PARAMETER BOX CSS */
+        .param-box { background: #f8f9fa; border: 1px solid #e1e8ed; padding: 15px; border-radius: 8px; margin-bottom: 15px; transition: 0.3s; }
+        .param-title { font-size: 13px; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
+        
+        /* File Selector Button styling */
+        input[type="file"] { background: #fff; padding: 5px; }
+        input[type="file"]::file-selector-button { background: #2b5876; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-right: 15px; font-weight: 600; transition: 0.2s;}
+        input[type="file"]::file-selector-button:hover { background: #4e4376; }
+        
+        .param-box { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;}
+        .param-title { width: 100%; margin-bottom: 15px; }
+        .param-box .form-group { width: 48%; margin-bottom: 10px !important;}
+        
+        /* Full Width Layout utility */
+        .full-width { grid-column: 1 / -1; }
+        
+        .table-history { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .table-history th, .table-history td { padding: 15px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px;}
+        .table-history th { background: #f8f9fa; color: #7f8c8d; font-weight: 600; text-transform: uppercase; font-size: 13px;}
+        .btn-download { background: #e0eafc; color: #2b5876; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold; transition: 0.2s;}
+        .btn-download:hover { background: #2b5876; color: #fff; }
+        
+        /* NOTIFICATION DROPDOWN CSS */
+        .notif-wrapper { position: relative; cursor: pointer; margin-right: 20px; }
+        .notif-dropdown { display: none; position: absolute; top: 35px; right: -10px; width: 320px; background: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 1000; border: 1px solid #eee; overflow: hidden; text-align: left; cursor: default;}
+        .notif-header { background: #f8f9fa; padding: 12px 15px; font-weight: 600; font-size: 14px; border-bottom: 1px solid #eee; color: #2b5876; display: flex; justify-content: space-between; align-items: center;}
+        .notif-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; transition: 0.2s; display: flex; gap: 12px; align-items: flex-start; }
+        .notif-item:hover { background: #f4f6f9; }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px;}
+        .notif-icon.warning { background: #fdf5f4; color: #e74c3c; }
+        .notif-icon.admin { background: #e0eafc; color: #2b5876; }
+        .notif-icon.info { background: #e9f7ef; color: #27ae60; }
+        .notif-content p { margin: 0; color: #444; line-height: 1.4; }
+        .notif-time { font-size: 11px; color: #999; margin-top: 5px; display: block; font-weight: 500;}
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="logo">
+            <h2><i class="fas fa-microscope"></i> Data Scientist Lab</h2>
+        </div>
+        
+        <div class="topbar-right">
+            <div class="notif-wrapper" onclick="toggleNotif(event)">
+                <i class="fas fa-bell" style="font-size: 22px; color: #7f8c8d; transition: 0.2s;" id="bell-icon"></i>
+                <span style="position: absolute; top: -3px; right: -3px; background: #e74c3c; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #fff;"></span>
+                
+                <div class="notif-dropdown" id="notifMenu">
+                    <div class="notif-header">
+                        Notifications 
+                        <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px;">3 New</span>
+                    </div>
+                    
+                    <div class="notif-item">
+                        <div class="notif-icon warning"><i class="fas fa-chart-line"></i></div>
+                        <div class="notif-content">
+                            <p><strong>System Alert:</strong> BTC Model accuracy dropped below threshold. Retrain recommended.</p>
+                            <span class="notif-time">10 mins ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notif-item">
+                        <div class="notif-icon admin"><i class="fas fa-user-shield"></i></div>
+                        <div class="notif-content">
+                            <p><strong>Admin Kien:</strong> Assigned you a new task: "Check the recent volatility in ETH dataset".</p>
+                            <span class="notif-time">1 hour ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notif-item">
+                        <div class="notif-icon info"><i class="fas fa-database"></i></div>
+                        <div class="notif-content">
+                            <p><strong>Pipeline:</strong> Weekly automated data backup completed successfully.</p>
+                            <span class="notif-time">1 day ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/logout" class="btn-logout">
+                Logout <i class="fas fa-sign-out-alt"></i>
+            </a>
+            <div class="user">
+                <i class="fas fa-user-astronaut" style="font-size: 20px;"></i>
+                <span>Scientist</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="full-width" style="background: #fff3cd; border-left: 5px solid #f39c12; padding: 15px 20px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <div>
+                <h4 style="color: #d68910; margin-bottom: 5px; font-size: 15px;">
+                    <i class="fas fa-exclamation-triangle"></i> System Alert: Potential Data Drift Detected
+                </h4>
+                <p style="font-size: 13px; color: #555; margin: 0;">
+                    <strong>Automated Monitor:</strong> The RMSE for the last 7 days has increased by 15% compared to the baseline. Market volatility detected (BTC/USD). Retraining is highly recommended.
+                </p>
+                <p style="font-size: 13px; color: #555; margin-top: 5px;">
+                    <strong>Admin Message:</strong> <i>"Hi DS Team, please update the weights with this week's dataset. We received some feedback about accuracy."</i> - 1 hour ago
+                </p>
+            </div>
+            <button style="background: transparent; border: 1px solid #d68910; color: #d68910; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                Mark as Read
+            </button>
+        </div>
+
+        <div class="panel full-width">
+            <h3 class="panel-title"><i class="fas fa-chart-pie"></i> Feature Importance Analysis (Random Forest)</h3>
+            <p style="font-size: 14px; color: #7f8c8d; margin-bottom: 20px;">
+                Identifies which historical price points (T-x) have the most significant impact on the model's prediction.
+            </p>
+            <div style="height: 300px; width: 100%; display: flex; justify-content: center;">
+                <canvas id="featureChart"></canvas>
+            </div>
+        </div>
+
+        <div class="panel full-width">
+            <h3 class="panel-title"><i class="fas fa-history"></i> Model Registry & Training History</h3>
+            <table class="table-history">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Date Trained</th>
+                        <th>Target Model</th>
+                        <th>Parameters (n_estimators / max_depth)</th>
+                        <th>R² Score</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>v2.1.0</strong></td>
+                        <td>2026-04-07 20:30</td>
+                        <td><span class="badge-info">Random Forest</span></td>
+                        <td>Trees: 100 | Depth: Auto</td>
+                        <td style="color: #27ae60; font-weight: bold;">0.985</td>
+                        <td><a href="#" class="btn-download"><i class="fas fa-download"></i> .pkl</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>v2.0.5</strong></td>
+                        <td>2026-03-25 14:15</td>
+                        <td><span class="badge-info" style="background: #fdf5f4; color: #e74c3c;">Decision Tree</span></td>
+                        <td>Min Split: 2 | Depth: 10</td>
+                        <td style="color: #e74c3c; font-weight: bold;">0.892</td>
+                        <td><a href="#" class="btn-download"><i class="fas fa-download"></i> .pkl</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>v1.0.0</strong></td>
+                        <td>2026-01-10 09:00</td>
+                        <td><span class="badge-info">Random Forest</span></td>
+                        <td>Trees: 50 | Depth: Auto</td>
+                        <td style="color: #f39c12; font-weight: bold;">0.941</td>
+                        <td><a href="#" class="btn-download"><i class="fas fa-download"></i> .pkl</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <h3 class="panel-title"><i class="fas fa-chart-bar"></i> Model Evaluation Metrics</h3>
+            
+            <div class="metrics-grid">
+                <div class="metric-box dt">
+                    <div class="metric-title"><i class="fas fa-tree"></i> Decision Tree (Baseline)</div>
+                    <div style="text-align: left; margin-top: 15px;">
+                        <p style="margin-bottom: 8px;"><strong>RMSE:</strong> <span style="font-size: 18px; float: right;">${{ metrics.dt_rmse }}</span></p>
+                        <p style="margin-bottom: 8px;"><strong>MAE:</strong> <span style="font-size: 18px; float: right;">${{ metrics.dt_mae }}</span></p>
+                        <p style="margin-bottom: 2px;">
+                        <strong>R² Score:</strong> 
+                        <span style="font-size: 18px; font-weight: bold; color: #27ae60; float: right;">0.93</span>
+                        </p>
+                        <div style="font-size: 11px; color: #7f8c8d; text-align: right; border-top: 1px dashed #ccc; padding-top: 2px;">
+                            System Requirement: &ge; 0.85
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-box rf">
+                    <div class="metric-title"><i class="fas fa-network-wired"></i> Random Forest (Proposed)</div>
+                    <div style="text-align: left; margin-top: 15px;">
+                        <p style="margin-bottom: 8px;"><strong>RMSE:</strong> <span style="font-size: 18px; color: #27ae60; float: right;">${{ metrics.rf_rmse }}</span></p>
+                        <p style="margin-bottom: 8px;"><strong>MAE:</strong> <span style="font-size: 18px; color: #27ae60; float: right;">${{ metrics.rf_mae }}</span></p>
+                        <p style="margin-bottom: 2px;">
+                        <strong>R² Score:</strong> 
+                        <span style="font-size: 18px; font-weight: bold; color: #27ae60; float: right;">0.93</span>
+                        </p>
+                        <div style="font-size: 11px; color: #7f8c8d; text-align: right; border-top: 1px dashed #ccc; padding-top: 2px;">
+                            System Requirement: &ge; 0.85
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="color: #7f8c8d; font-size: 14px; text-align: center;">
+                <i class="fas fa-info-circle"></i> Random Forest demonstrates superior performance with lower RMSE and MAE scores.
+            </p>
+        </div>
+
+        <div class="panel">
+            <h3 class="panel-title"><i class="fas fa-cogs"></i> Pipeline Control</h3>
+            
+            <div class="status-box">
+                <p><strong>Last Trained:</strong> <span style="color: #e67e22;">{{ metrics.last_trained }}</span></p>
+                <p>If data drift is detected, initiate a retraining sequence to update model weights with the latest market data.</p>
+                
+                <form id="retrainForm" action="/retrain" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+                    
+                    <div class="tuning-form">
+                        
+                        <div class="form-group" style="border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                            <label><i class="fas fa-file-csv" style="color: #27ae60;"></i> Include Dataset <span class="badge-info">.csv files only</span></label>
+                            <input type="file" name="dataset_file" class="form-control" accept=".csv" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-bullseye" style="color: #e67e22;"></i> Target Model to Retrain</label>
+                            <select name="target_model" id="target_model" class="form-control" onchange="toggleParams()">
+                                <option value="both">Retrain Both Models</option>
+                                <option value="dt">Decision Tree Only</option>
+                                <option value="rf">Random Forest Only</option>
+                            </select>
+                        </div>
+
+                        <div id="dt_params" class="param-box">
+                            <div class="param-title" style="color: #e74c3c;"><i class="fas fa-tree"></i> Decision Tree Parameters</div>
+                            
+                            <div class="form-group">
+                                <label>Max Depth <span class="badge-info">max_depth</span></label>
+                                <input type="number" name="dt_max_depth" class="form-control" placeholder="None (Auto)">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Min Samples Split <span class="badge-info">min_samples_split</span></label>
+                                <input type="number" name="dt_min_samples" class="form-control" value="2" min="2">
+                            </div>
+                        </div>
+
+                        <div id="rf_params" class="param-box">
+                            <div class="param-title" style="color: #27ae60;"><i class="fas fa-network-wired"></i> Random Forest Parameters</div>
+                            
+                            <div class="form-group">
+                                <label>Number of Trees <span class="badge-info">n_estimators</span></label>
+                                <input type="number" name="rf_estimators" class="form-control" value="100" min="10" step="10">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Max Depth <span class="badge-info">max_depth</span></label>
+                                <input type="number" name="rf_max_depth" class="form-control" placeholder="None (Auto)">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn-retrain">
+                        <i class="fas fa-microchip"></i> Upload & Retrain Model
+                    </button>
+                </form>
+                
+                <div id="loading">
+                    <i class="fas fa-circle-notch spinner"></i> Fetching new data from API & updating weights...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script>
+        // Simulation loading effect
+        function showLoading() {
+            document.querySelector('.btn-retrain').style.opacity = '0.5';
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        // Toggle parameters based on selected model
+        function toggleParams() {
+            let selectedModel = document.getElementById('target_model').value;
+            let dtBox = document.getElementById('dt_params');
+            let rfBox = document.getElementById('rf_params');
+
+            if (selectedModel === 'both') {
+                dtBox.style.display = 'block';
+                rfBox.style.display = 'block';
+            } else if (selectedModel === 'dt') {
+                dtBox.style.display = 'block';
+                rfBox.style.display = 'none';
+            } else if (selectedModel === 'rf') {
+                dtBox.style.display = 'none';
+                rfBox.style.display = 'block';
+            }
+        }
+
+        // Render Feature Importance Chart
+        window.onload = function() {
+            var ctxFeature = document.getElementById('featureChart').getContext('2d');
+            var featureChart = new Chart(ctxFeature, {
+                type: 'bar',
+                data: {
+                    labels: ['T-1 (Yesterday)', 'T-2', 'T-3', 'T-4', 'T-5', 'T-6'],
+                    datasets: [{
+                        label: 'Impact Weight (%)',
+                        data: [65.2, 15.8, 8.4, 5.1, 3.5, 2.0],
+                        backgroundColor: [
+                            'rgba(39, 174, 96, 0.8)',
+                            'rgba(41, 128, 185, 0.6)',
+                            'rgba(41, 128, 185, 0.6)',
+                            'rgba(41, 128, 185, 0.6)',
+                            'rgba(41, 128, 185, 0.6)',
+                            'rgba(41, 128, 185, 0.6)'
+                        ],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+        }
+        
+        // Notification Toggle Logic
+        function toggleNotif(event) {
+            let menu = document.getElementById('notifMenu');
+            let bell = document.getElementById('bell-icon');
+            
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+                bell.style.color = '#7f8c8d';
+            } else {
+                menu.style.display = 'block';
+                bell.style.color = '#2b5876';
+            }
+            event.stopPropagation();
+        }
+
+        window.onclick = function(event) {
+            let menu = document.getElementById('notifMenu');
+            let bell = document.getElementById('bell-icon');
+            if (menu && menu.style.display === 'block') {
+                menu.style.display = 'none';
+                bell.style.color = '#7f8c8d';
+            }
+        }
+        
+        document.getElementById('notifMenu').addEventListener('click', function(event){
+            event.stopPropagation();
+        });
+    </script>
+</body>
+
+</html>

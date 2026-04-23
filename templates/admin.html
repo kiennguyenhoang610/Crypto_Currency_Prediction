@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <title>System Admin Dashboard</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f7f6; color: #333; }
+        
+        /* Topbar Section */
+        .topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .topbar .logo h2 { color: #299b63; margin: 0; }
+        .topbar .search { position: relative; width: 300px; }
+        .topbar .search input { width: 100%; padding: 10px 40px 10px 20px; border-radius: 20px; border: 1px solid #ccc; outline: none; }
+        .topbar .search i { position: absolute; right: 15px; top: 12px; color: #888; }
+        
+        /* Topbar Right Side */
+        .topbar-right { display: flex; align-items: center; gap: 25px; }
+        .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; transition: 0.3s; }
+        .btn-logout:hover { color: #c0392b; }
+        .user { background: #ecf0f1; padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 500;}
+        
+        /* Main Content */
+        .main { padding: 30px; }
+        
+        /* Card Layout */
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; }
+        .card { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; transition: transform 0.3s;}
+        .card:hover { transform: translateY(-5px); }
+        .card .number { font-size: 32px; font-weight: 600; color: #2c3e50; }
+        .card .card-name { color: #7f8c8d; font-size: 15px; margin-top: 5px; }
+        .card .icon-box i { font-size: 40px; color: #299b63; background: #e9f7ef; padding: 15px; border-radius: 10px;}
+        
+        /* Chart Section */
+        .charts { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .chart { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .chart h2 { margin-bottom: 20px; color: #34495e; font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px;}
+        .chart-container { position: relative; height: 300px; width: 100%; display: flex; justify-content: center; }
+
+        /* Admin Table Container */
+        .table-container { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-top: 30px; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .table-header h2 { color: #34495e; font-size: 18px; }
+        .btn-add { background: #299b63; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: 600;}
+        
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: #f4f7f6; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { color: #7f8c8d; font-weight: 600; font-size: 14px; text-transform: uppercase;}
+        td { color: #2c3e50; font-size: 14px; font-weight: 500;}
+        
+        /* Role Badges */
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.admin { background: #ffeaa7; color: #d35400; }
+        .badge.scientist { background: #dff9fb; color: #2980b9; }
+        .badge.user { background: #e9f7ef; color: #27ae60; }
+        
+        /* Action Buttons */
+        .action-btn { background: none; border: none; cursor: pointer; margin-right: 15px; font-size: 16px; transition: 0.2s;}
+        .edit-btn { color: #3498db; }
+        .delete-btn { color: #e74c3c; }
+        .action-btn:hover { transform: scale(1.2); }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="topbar">
+            <button onclick="pingDS()" style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 14px; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); transition: 0.2s;">
+                    <i class="fas fa-exclamation-triangle"></i> Ping DS Team
+            </button>
+            <div class="logo">
+                <h2>CryptoPredict Admin.</h2>
+            </div>
+            <div class="search">
+                <input type="text" name="search" placeholder="Search logs or users...">
+                <i class="fas fa-search"></i>
+            </div>
+            
+            <div class="topbar-right">
+                <a href="/logout" class="btn-logout">
+                    Logout <i class="fas fa-sign-out-alt"></i>
+                </a>
+
+                <div class="user">
+                    <i class="fas fa-user-shield" style="font-size: 20px; color: #299b63;"></i>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">1,024</div>
+                        <div class="card-name">Active Users</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">8,450</div>
+                        <div class="card-name">API Requests</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">2</div>
+                        <div class="card-name">Monitored Coins</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fab fa-bitcoin"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number" style="color: #27ae60;">Online</div>
+                        <div class="card-name">System Status</div>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts">
+                <div class="chart">
+                    <h2>System Traffic (Past 7 Days)</h2>
+                    <div class="chart-container">
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart">
+                    <h2>Prediction Distribution</h2>
+                    <div class="chart-container">
+                        <canvas id="coinDistribution"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>User Access Management</h2>
+                    <button class="btn-add"><i class="fas fa-plus"></i> Add New User</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email (Contact)</th>
+                            <th>Role / Permission</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr>
+                            <td>Kien Nguyen</td>
+                            <td>kien.nguyen@hcmut.edu.vn</td>
+                            <td id="role_admin"><span class="badge admin">System Admin</span></td>
+                            <td>Just now</td>
+                            <td>
+                                <span style="color: #bdc3c7; font-size: 13px; font-style: italic;">Protected</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Canh Phi</td>
+                            <td>phi.canhvan@hcmut.edu.vn</td>
+                            <td id="role_lam_ai"><span class="badge scientist">Data Scientist</span></td>
+                            <td>2 hours ago</td>
+                            <td>
+                                <button class="action-btn edit-btn" title="Edit Role" onclick="editRole('lam_ai')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" title="Delete User" onclick="deleteUser(this, 'lam_ai')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thai Pham</td>
+                            <td>thaipham@gmail.com</td>
+                            <td id="role_investor_01"><span class="badge user">End User</span></td>
+                            <td>1 day ago</td>
+                            <td>
+                                <button class="action-btn edit-btn" title="Edit Role" onclick="editRole('investor_01')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" title="Delete User" onclick="deleteUser(this, 'investor_01')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>System Audit Logs</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Event Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: #7f8c8d;">2026-04-07 20:15</td>
+                            <td>User <b>investor_01</b> predicted BTC (30 days)</td>
+                            <td><span style="color: #27ae60;"><i class="fas fa-check"></i> Success</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #7f8c8d;">2026-04-07 18:30</td>
+                            <td>Admin modified role for <b>phi_canh</b></td>
+                            <td><span style="color: #27ae60;"><i class="fas fa-check"></i> Success</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #7f8c8d;">2026-04-07 09:12</td>
+                            <td>Failed login attempt (IP: 192.168.1.45)</td>
+                            <td><span style="color: #e74c3c;"><i class="fas fa-times"></i> Warning</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script>
+        // 1. System Traffic (Line Chart)
+        var ctxTraffic = document.getElementById('trafficChart').getContext('2d');
+        var trafficChart = new Chart(ctxTraffic, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'API Calls',
+                    data: [120, 190, 300, 250, 420, 380, 500],
+                    backgroundColor: 'rgba(41, 155, 99, 0.2)',
+                    borderColor: 'rgb(41, 155, 99)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // 2. Prediction Distribution (Doughnut Chart)
+        var ctxCoin = document.getElementById('coinDistribution').getContext('2d');
+        var coinChart = new Chart(ctxCoin, {
+            type: 'doughnut',
+            data: {
+                labels: ['Bitcoin (BTC)', 'Ethereum (ETH)'],
+                datasets: [{
+                    data: [70, 30],
+                    backgroundColor: ['rgba(247, 147, 26, 0.8)', 'rgba(98, 126, 234, 0.8)'],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+
+        // Toggle Edit Mode for User Role
+        function editRole(username) {
+            let td = document.getElementById('role_' + username);
+            
+            td.innerHTML = `
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <select id="select_${username}" style="padding: 5px; border-radius: 5px; border: 1px solid #ccc; font-family: 'Poppins'; outline: none;">
+                        <option value="admin">System Admin</option>
+                        <option value="scientist">Data Scientist</option>
+                        <option value="user">End User</option>
+                    </select>
+                    <button onclick="saveRole('${username}')" style="background: #299b63; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;">Save</button>
+                </div>
+            `;
+        }
+
+        // Save New Role and Update UI
+        function saveRole(username) {
+            let select = document.getElementById('select_' + username);
+            let newRoleValue = select.value;
+            let newRoleName = select.options[select.selectedIndex].text;
+            let td = document.getElementById('role_' + username);
+
+            td.innerHTML = `<span class="badge ${newRoleValue}">${newRoleName}</span>`;
+
+            alert(`[System Alert] Successfully changed role for user '${username}' to '${newRoleName}'.`);
+        }
+
+        // Delete User from Table
+        function deleteUser(btn, username) {
+            if(confirm(`WARNING: Are you sure you want to delete user '${username}'?\nThis action cannot be undone.`)) {
+                let row = btn.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+                alert(`User '${username}' has been completely removed from the system.`);
+            }
+        }
+        
+        // Admin sends alert to DS Team
+        function pingDS() {
+            let message = prompt("Enter alert message for Data Scientist:", "Check the recent volatility in ETH dataset. Please retrain!");
+            
+            if (message != null && message !== "") {
+                alert(`[System Success] Alert sent to Data Scientist's dashboard.\nMessage: "${message}"`);
+            }
+        }
+    </script>
+</body>
+
+</html>
