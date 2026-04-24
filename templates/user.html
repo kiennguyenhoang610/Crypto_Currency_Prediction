@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='img/favicon.png')}}"/>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}"/>
 
     <link
       href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap"
@@ -16,16 +16,15 @@
     <link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     
     <title>CryptoPredict - Market Prediction</title>
     
     <style>
-        /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
         }
-        /* Sticky/Fixed Navigation bar */
+
         .nav {
             display: flex;
             justify-content: space-between;
@@ -36,13 +35,13 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 9999; 
+            z-index: 9999;
             background-color: #f4f7f6;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08); 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
         }
 
         .header {
-            padding-top: 80px; 
+            padding-top: 80px;
         }
 
         .text-logo {
@@ -50,27 +49,29 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
-            color: #0b8e36; 
+            color: #0b8e36;
         }
+
         .text-logo i { font-size: 35px; }
-        .text-logo h2 { 
-            font-size: 28px; 
-            font-weight: 800; 
-            margin: 0; 
-            letter-spacing: -0.5px; 
+
+        .text-logo h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.5px;
         }
 
         .nav__right {
             display: flex;
             align-items: center;
-            gap: 15px; 
+            gap: 15px;
         }
 
         .nav__links {
             display: flex;
             list-style: none;
             align-items: center;
-            gap: 8px !important; 
+            gap: 8px !important;
             margin: 0;
             padding: 0;
         }
@@ -82,27 +83,27 @@
 
         .pill-btn {
             display: inline-block;
-            padding: 8px 20px !important; 
-            border-radius: 50px !important; 
+            padding: 8px 20px !important;
+            border-radius: 50px !important;
             font-weight: 600 !important;
             font-size: 15px !important;
             text-decoration: none !important;
             transition: all 0.3s ease !important;
-            background-color: #5db86b !important; 
-            color: #ffffff !important; 
+            background-color: #5db86b !important;
+            color: #ffffff !important;
             border: none !important;
         }
 
         .pill-btn:hover {
-            background-color: #4cae5a !important; 
+            background-color: #4cae5a !important;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(93, 184, 107, 0.4);
         }
         
         .pill-btn-logout {
-            background-color: #de534f !important; 
+            background-color: #de534f !important;
             color: #ffffff !important;
-            margin-left: 5px !important; 
+            margin-left: 5px !important;
         }
         
         .pill-btn-logout:hover {
@@ -126,24 +127,24 @@
             margin-top: 10px;
             transition: 0.3s;
         }
+
         .news-link:hover {
             color: #086b28;
             transform: translateX(5px);
             text-decoration: none;
         }
 
-        /* --- TESTIMONIAL 3-COLUMN SECTION --- */
         .testimonial-container {
             display: flex;
             justify-content: center;
             gap: 30px;
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
             margin-top: 40px;
             padding: 0 20px;
         }
 
         .testimonial-item {
-            background-color: #f4f6f5; 
+            background-color: #f4f6f5;
             border-radius: 12px;
             padding: 30px 25px;
             width: 30%;
@@ -151,7 +152,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; 
+            justify-content: space-between;
         }
 
         .testimonial__text {
@@ -167,8 +168,8 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            font-style: normal; 
-            margin-top: auto; 
+            font-style: normal;
+            margin-top: auto;
         }
 
         .testimonial__photo {
@@ -192,9 +193,64 @@
             margin: 0;
             font-weight: 500;
         }
+
+        .predict-alert {
+            max-width: 720px;
+            margin: 0 auto 18px;
+            background: #fdf2f2;
+            border: 1px solid #f3c2c0;
+            color: #c0392b;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .predict-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.36);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .predict-overlay.is-visible { display: flex; }
+
+        .predict-overlay__card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 26px 28px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #2b5876;
+            font-weight: 700;
+        }
+
+        .predict-spinner {
+            width: 22px;
+            height: 22px;
+            border: 3px solid #dce6f5;
+            border-top-color: #299b63;
+            border-radius: 50%;
+            animation: predict-spin 1s linear infinite;
+        }
+
+        @keyframes predict-spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
   </head>
   <body>
+    <div class="predict-overlay" id="predictOverlay">
+      <div class="predict-overlay__card">
+        <span class="predict-spinner"></span>
+        <span>Generating forecast...</span>
+      </div>
+    </div>
 
     <header class="header">
       <nav class="nav">
@@ -215,7 +271,7 @@
                 <a class="pill-btn" href="#section--2">Prediction</a>
               </li>
               <li class="nav__item">
-                <a class="pill-btn" href="#section--3">About Team</a>
+                <a class="pill-btn" href="#section--3">About</a>
               </li>
               <li class="nav__item">
                 <a href="/logout" class="pill-btn pill-btn-logout">Logout</a>
@@ -223,7 +279,7 @@
             </ul>
             
             <img
-                src="{{url_for('static', filename='img/HCMUT_logo.png')}}"
+                src="{{ url_for('static', filename='img/HCMUT_logo.png') }}"
                 alt="HCMUT logo"
                 class="nav__logo_hcmut"
             />
@@ -232,13 +288,13 @@
 
       <div class="header__title">
         <h1>
-          <span class="highlight"> Cryptocurrency Price Prediction </span>
+          <span class="highlight"> Cryptocurrency Prices Prediction </span>
           <br />
         </h1>
         <h4>Empowering your investment decisions with AI-driven insights</h4>
         <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
         <img
-          src="{{url_for('static', filename='img/crypto2.jpg')}}"
+          src="{{ url_for('static', filename='img/crypto2.jpg') }}"
           class="header__img"
           alt="Crypto dashboard"
         />
@@ -254,59 +310,38 @@
       </div>
 
       <div class="features">
+        {% for article in market_news[:3] %}
+        {% if loop.index == 1 %}
         <img
-          src="{{url_for('static', filename='img/moved_LYNXMPEKA01G9_L.jpg')}}"
+          src="{{ url_for('static', filename='img/moved_LYNXMPEKA01G9_L.jpg') }}"
           alt="Crypto Market Data"
           class="features__img"
         />
-        <div class="features__feature">
-          <div class="features__icon">
-            <svg>
-              <use xlink:href="{{url_for('static', filename='img/icons.svg')}}#icon-monitor"></use>
-            </svg>
-          </div>
-          <h5 class="features__header">Bitcoin Surges Past $69,000 Amid Geopolitical Shifts</h5>
-          <p>
-            Bitcoin (BTC) reclaimed the $69,000 level this week, driven by easing geopolitical tensions and renewed macroeconomic optimism. Analysts suggest the market is reacting strongly to upcoming liquidity injections.
-          </p>
-          <a href="https://www.investing.com/news/cryptocurrency-news/bitcoin-price-today-climbs-above-69k-on-reports-on-potential-iran-ceasefire-4597800" target="_blank" class="news-link">Read full article <i class="fas fa-arrow-right"></i></a>
-        </div>
-
-        <div class="features__feature">
-          <div class="features__icon">
-            <svg>
-              <use xlink:href="{{url_for('static', filename='img/icons.svg')}}#icon-trending-up"></use>
-            </svg>
-          </div>
-          <h5 class="features__header">SEC's 'Safe Harbor' Crypto Proposal Heads to White House</h5>
-          <p>
-            A highly anticipated SEC proposal designed to create a regulatory "safe harbor" for decentralized finance (DeFi) is currently under White House review. If passed, it could provide the clearest framework yet for U.S. crypto operations.
-          </p>
-          <a href="https://www.theblock.co/post/396472/sec-crypto-safe-harbor-white-house-review-proposal-due-shortly-atkins" target="_blank" class="news-link">Read full article <i class="fas fa-arrow-right"></i></a>
-        </div>
+        {% elif loop.index == 2 %}
         <img
-          src="{{url_for('static', filename='img/211001_White_House_General-1200x675.jpg')}}"
+          src="{{ url_for('static', filename='img/211001_White_House_General-1200x675.jpg') }}"
           alt="Market Fluctuation"
           class="features__img"
         />
-
+        {% else %}
         <img
-          src="{{url_for('static', filename='img/210524_Phantom_Solana_Logo-1200x675.jpg')}}"
+          src="{{ url_for('static', filename='img/210524_Phantom_Solana_Logo-1200x675.jpg') }}"
           alt="Web3 Wallet Security"
           class="features__img"
         />
+        {% endif %}
+
         <div class="features__feature">
           <div class="features__icon">
             <svg>
-              <use xlink:href="{{url_for('static', filename='img/icons.svg')}}#icon-credit-card"></use>
+              <use xlink:href="{{ url_for('static', filename='img/icons.svg') }}{% if loop.index == 1 %}#icon-monitor{% elif loop.index == 2 %}#icon-trending-up{% else %}#icon-credit-card{% endif %}"></use>
             </svg>
           </div>
-          <h5 class="features__header">Phantom Wallet Outage Disrupts Solana DeFi Trading</h5>
-          <p>
-            Popular web3 wallet Phantom reported a service outage affecting in-app balance displays and transaction routing. While funds remain secure on-chain, the temporary downtime caused significant disruptions.
-          </p>
-          <a href="https://www.theblock.co/post/396479/phantom-reports-service-outage" target="_blank" class="news-link">Read full article <i class="fas fa-arrow-right"></i></a>
+          <h5 class="features__header">{{ article.title }}</h5>
+          <p>{{ article.summary }}</p>
+          <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="news-link">Read full article <i class="fas fa-arrow-right"></i></a>
         </div>
+        {% endfor %}
       </div>
     </section>
 
@@ -318,28 +353,35 @@
         </h3>
       </div>
 
+      {% if predict_error %}
+      <div class="predict-alert">
+        <i class="fas fa-exclamation-circle"></i> {{ predict_error }}
+      </div>
+      {% endif %}
+
       <div class="operations">
         <div class="operations__tab-container">
-          <section class="multi_step_form">  
-            <form id="msform" action="/predict/" method="POST"> 
+          <section class="multi_step_form">
+            <form id="msform" action="/predict/" method="POST">
               <div class="tittle">
                 <h2>Asset Configuration</h2>
                 <p>Complete this setup to initialize the prediction model</p>
               </div>
               <ul id="progressbar">
-                <li class="active">Asset Type</li>  
-                <li>Time Horizon</li> 
+                <li class="active">Asset Type</li>
+                <li>Time Horizon</li>
                 <li>Execution</li>
               </ul>
               
               <fieldset>
                 <h3>Select Asset & Model</h3>
-                <h6>Choose the digital asset and prediction algorithm.</h6> 
-                <div class="form-group fg_3" style="text-align: left;"> 
+                <h6>Choose the digital asset and prediction algorithm.</h6>
+                <div class="form-group fg_3" style="text-align: left;">
                   <label style="font-weight: 600; margin-bottom: 5px; display: block; font-size: 14px">Cryptocurrency:</label>
                   <select id="stock_type" name="stock_type" class="product_select" style="margin-bottom: 20px;">
-                    <option value="BTC">Bitcoin (BTC)</option>
-                    <option value="ETH">Ethereum (ETH)</option>
+                    {% for asset in assets %}
+                    <option value="{{ asset.symbol }}" {% if asset.symbol == selected_symbol %}selected{% endif %}>{{ asset.name }} ({{ asset.symbol }})</option>
+                    {% endfor %}
                   </select>
 
                   <label style="font-weight: 600; margin-bottom: 5px; display: block;font-size: 14px">Prediction Mode:</label>
@@ -348,28 +390,28 @@
                     <option value="rf">Random Forest Only (High Accuracy)</option>
                     <option value="dt">Decision Tree Only (Baseline)</option>
                   </select>
-                </div> 
-                <button type="button" class="next action-button" style="margin-top: 20px;">Continue</button>  
+                </div>
+                <button type="button" class="next action-button" style="margin-top: 20px;">Continue</button>
               </fieldset>
 
               <fieldset>
                 <h3>Select Time Horizon</h3>
                 <h6>Define the future period (in days) for the prediction.</h6>
-                <div class="form-group fg_3"> 
+                <div class="form-group fg_3">
                   <select id="next_time" name="next_time" class="product_select">
                     <option value="-">-</option>
                     <option value="1">1 Day</option>
                     <option value="5">5 Days</option>
-                    <option value="10">10 Days</option> 
+                    <option value="10">10 Days</option>
                   </select>
-                </div> 
+                </div>
                 <button type="button" class="action-button previous previous_button">Back</button>
                 <button type="submit" class="action-button">Predict</button>
               </fieldset>
-              
-            </form>  
+            </form>
           </section>
         </div>
+      </div>
     </section>
 
     <section class="section" id="section--3">
@@ -381,62 +423,62 @@
       </div>
 
       <div class="slider">
-            <div class="testimonial-container">
-                <div class="testimonial-item">
-                    <blockquote class="testimonial__text">
-                      "Data is the raw material, but logic is the architect. From designing secure cryptographic flows to building scalable data pipelines, I believe in engineering systems where complex problems meet elegant solutions."
-                    </blockquote>
-                    <address class="testimonial__author">
-                      <img src="{{url_for('static', filename='img/Kien.jpg')}}" alt="Kien" class="testimonial__photo" />
-                      <div>
-                          <h6 class="testimonial__name">Nguyen Hoang Kien</h6>
-                          <p class="testimonial__location">Software Engineer</p>
-                      </div>
-                    </address>
-                </div>
+        <div class="testimonial-container">
+          <div class="testimonial-item">
+            <blockquote class="testimonial__text">
+              "Data is the raw material, but logic is the architect. From designing secure cryptographic flows to building scalable data pipelines, I believe in engineering systems where complex problems meet elegant solutions."
+            </blockquote>
+            <address class="testimonial__author">
+              <img src="{{ url_for('static', filename='img/Kien.jpg') }}" alt="Kien" class="testimonial__photo" />
+              <div>
+                <h6 class="testimonial__name">Nguyen Hoang Kien</h6>
+                <p class="testimonial__location">Software Engineer</p>
+              </div>
+            </address>
+          </div>
 
-                <div class="testimonial-item">
-                    <blockquote class="testimonial__text">
-                      "Great software doesn't just execute commands; it transforms uncertainty into clarity. I write code to bridge the gap between intelligent algorithms and real-world impact."
-                    </blockquote>
-                    <address class="testimonial__author">
-                      <img src="{{url_for('static', filename='img/Canh.png')}}" alt="Canh" class="testimonial__photo" />
-                      <div>
-                          <h6 class="testimonial__name">Van Phi Canh</h6>
-                          <p class="testimonial__location">Software Engineer</p>
-                      </div>
-                    </address>
-                </div>
+          <div class="testimonial-item">
+            <blockquote class="testimonial__text">
+              "Great software doesn't just execute commands; it transforms uncertainty into clarity. I write code to bridge the gap between intelligent algorithms and real-world impact."
+            </blockquote>
+            <address class="testimonial__author">
+              <img src="{{ url_for('static', filename='img/Canh.png') }}" alt="Canh" class="testimonial__photo" />
+              <div>
+                <h6 class="testimonial__name">Van Phi Canh</h6>
+                <p class="testimonial__location">Software Engineer</p>
+              </div>
+            </address>
+          </div>
 
-                <div class="testimonial-item">
-                    <blockquote class="testimonial__text">
-                      "Engineering is the art of making the impossible run efficiently. I strive to craft software that is as resilient and robust under the hood as it is seamless for the user."
-                    </blockquote>
-                    <address class="testimonial__author">
-                      <img src="{{url_for('static', filename='img/Thai.png')}}" alt="Thai" class="testimonial__photo" />
-                      <div>
-                          <h6 class="testimonial__name">Pham Quoc Thai</h6>
-                          <p class="testimonial__location">Software Engineer</p>
-                      </div>
-                    </address>
-                </div>
-            </div>
+          <div class="testimonial-item">
+            <blockquote class="testimonial__text">
+              "Engineering is the art of making the impossible run efficiently. I strive to craft software that is as resilient and robust under the hood as it is seamless for the user."
+            </blockquote>
+            <address class="testimonial__author">
+              <img src="{{ url_for('static', filename='img/Thai.png') }}" alt="Thai" class="testimonial__photo" />
+              <div>
+                <h6 class="testimonial__name">Pham Quoc Thai</h6>
+                <p class="testimonial__location">Software Engineer</p>
+              </div>
+            </address>
+          </div>
+        </div>
       </div>
     </section>
 
     <footer class="footer">
       <ul class="footer__nav">
-        <li class="footer__item"><a class="footer__link" href="#">About</a></li>
-        <li class="footer__item"><a class="footer__link" href="#">Terms of Use</a></li>
-        <li class="footer__item"><a class="footer__link" href="#">Privacy Policy</a></li>
-        <li class="footer__item"><a class="footer__link" href="#">Contact Us</a></li>
+        <li class="footer__item"><a class="footer__link" href="/about">About</a></li>
+        <li class="footer__item"><a class="footer__link" href="/terms">Terms of Use</a></li>
+        <li class="footer__item"><a class="footer__link" href="/privacy">Privacy Policy</a></li>
+        <li class="footer__item"><a class="footer__link" href="/contact">Contact Us</a></li>
       </ul>
       <p class="footer__copyright">
-        &copy; System developed by HCMUT students. Base template by Jonas Schmedtmann. Educational purpose only.
+        &copy; System developed by HCMUT students. Base template by Jonas Schmedtmann. Used for educational purposes only.
       </p>
     </footer>
 
-    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js'></script>
@@ -444,6 +486,21 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/js/intlTelInput.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js'></script>
-    <script src="{{url_for('static', filename='multiStep.js')}}"></script>
+    <script src="{{ url_for('static', filename='multiStep.js') }}"></script>
+    <script>
+      (function () {
+        const form = document.getElementById('msform');
+        const overlay = document.getElementById('predictOverlay');
+        if (!form || !overlay) return;
+        form.addEventListener('submit', function () {
+          overlay.classList.add('is-visible');
+          const submitButton = form.querySelector('button[type="submit"]');
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Predicting...';
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

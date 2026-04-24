@@ -1,251 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <title>System Admin Dashboard</title>
-    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #f4f7f6; color: #333; }
-        
-        /* Topbar Section */
-        .topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .topbar .logo h2 { color: #299b63; margin: 0; }
-        .topbar .search { position: relative; width: 300px; }
-        .topbar .search input { width: 100%; padding: 10px 40px 10px 20px; border-radius: 20px; border: 1px solid #ccc; outline: none; }
-        .topbar .search i { position: absolute; right: 15px; top: 12px; color: #888; }
-        
-        /* Topbar Right Side */
-        .topbar-right { display: flex; align-items: center; gap: 25px; }
-        .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; transition: 0.3s; }
-        .btn-logout:hover { color: #c0392b; }
-        .user { background: #ecf0f1; padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 500;}
-        
-        /* Main Content */
-        .main { padding: 30px; }
-        
-        /* Card Layout */
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; }
-        .card { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; transition: transform 0.3s;}
-        .card:hover { transform: translateY(-5px); }
-        .card .number { font-size: 32px; font-weight: 600; color: #2c3e50; }
-        .card .card-name { color: #7f8c8d; font-size: 15px; margin-top: 5px; }
-        .card .icon-box i { font-size: 40px; color: #299b63; background: #e9f7ef; padding: 15px; border-radius: 10px;}
-        
-        /* Chart Section */
-        .charts { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        .chart { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .chart h2 { margin-bottom: 20px; color: #34495e; font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px;}
-        .chart-container { position: relative; height: 300px; width: 100%; display: flex; justify-content: center; }
-
-        /* Admin Table Container */
-        .table-container { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-top: 30px; }
-        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .table-header h2 { color: #34495e; font-size: 18px; }
-        .btn-add { background: #299b63; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: 600;}
-        
+        body { background: #f4f7f6; color: #333; }
+        .topbar, .card, .panel { background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.05); }
+        .topbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; }
+        .main { padding: 28px; display: grid; gap: 28px; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
+        .card { padding: 24px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .card .number { font-size: 30px; font-weight: 700; color: #263238; }
+        .card .card-name { color: #7f8c8d; margin-top: 6px; }
+        .panel { padding: 24px; border-radius: 14px; }
+        .charts { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr); gap: 20px; align-items: start; }
+        .panel h3 { margin-bottom: 16px; color: #233042; font-size: 24px; }
+        .chart-shell { position: relative; height: 320px; min-height: 320px; width: 100%; }
+        .chart-shell canvas { width: 100% !important; height: 100% !important; display: block; }
+        .table-wrap { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        thead { background: #f4f7f6; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { color: #7f8c8d; font-weight: 600; font-size: 14px; text-transform: uppercase;}
-        td { color: #2c3e50; font-size: 14px; font-weight: 500;}
-        
-        /* Role Badges */
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        th, td { padding: 14px; border-bottom: 1px solid #edf0f2; text-align: left; }
+        th { color: #7f8c8d; font-size: 13px; text-transform: uppercase; }
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
         .badge.admin { background: #ffeaa7; color: #d35400; }
         .badge.scientist { background: #dff9fb; color: #2980b9; }
         .badge.user { background: #e9f7ef; color: #27ae60; }
-        
-        /* Action Buttons */
-        .action-btn { background: none; border: none; cursor: pointer; margin-right: 15px; font-size: 16px; transition: 0.2s;}
+        .badge.event-login, .badge.event-logout { background: #eaf2ff; color: #2c6ed5; }
+        .badge.event-login_failed { background: #fdf2f2; color: #c0392b; }
+        .badge.event-prediction { background: #eefaf3; color: #239b56; }
+        .badge.event-feedback { background: #fff4e5; color: #d68910; }
+        .badge.event-retrain { background: #f3ecff; color: #7d3c98; }
+        .badge.event-role_update, .badge.event-user_delete, .badge.event-ping_ds { background: #fdeef3; color: #c2185b; }
+        .badge.status-success { background: #eafaf1; color: #1f9d55; }
+        .badge.status-warning { background: #fff4e5; color: #d68910; }
+        .badge.status-error { background: #fdf2f2; color: #c0392b; }
+        .badge.status-info { background: #eaf2ff; color: #2c6ed5; }
+        .filter-bar { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+        .filter-select { padding: 9px 12px; border: 1px solid #dbe3ea; border-radius: 10px; background: #fff; color: #233042; min-width: 220px; }
+        .login-time { white-space: nowrap; }
+        .login-time .time-sub { color: #7f8c8d; font-size: 12px; }
+        .log-description { max-width: 520px; line-height: 1.45; }
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .modal-backdrop.open { display: flex; }
+        .modal-card {
+            width: min(100%, 560px);
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+            padding: 24px;
+        }
+        .modal-title { font-size: 24px; font-weight: 700; color: #233042; margin-bottom: 10px; }
+        .modal-subtitle { color: #667085; line-height: 1.55; margin-bottom: 18px; }
+        .modal-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #3b4b5f; }
+        .modal-textarea {
+            width: 100%;
+            min-height: 130px;
+            resize: vertical;
+            border: 1px solid #d7e2eb;
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: #233042;
+            outline: none;
+        }
+        .modal-textarea:focus { border-color: #299b63; box-shadow: 0 0 0 4px rgba(41, 155, 99, 0.12); }
+        .modal-error { margin-top: 10px; color: #c0392b; font-size: 13px; min-height: 18px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
+        .modal-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .modal-btn:hover { transform: translateY(-1px); }
+        .modal-btn.secondary { background: #eef3f8; color: #3b4b5f; }
+        .modal-btn.primary { background: linear-gradient(135deg, #e74c3c, #b93227); color: #fff; }
+        .modal-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .toast-stack {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1100;
+        }
+        .toast {
+            min-width: 280px;
+            max-width: 360px;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16);
+            background: #fff;
+            border-left: 5px solid #299b63;
+            color: #233042;
+        }
+        .toast.error { border-left-color: #c0392b; }
+        .toast-title { font-weight: 700; margin-bottom: 4px; }
+        .toast-text { color: #667085; line-height: 1.45; font-size: 14px; }
+        .action-btn { background: none; border: none; cursor: pointer; margin-right: 10px; font-size: 15px; }
         .edit-btn { color: #3498db; }
         .delete-btn { color: #e74c3c; }
-        .action-btn:hover { transform: scale(1.2); }
+        @media (max-width: 1100px) {
+            .charts { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 720px) {
+            .topbar { flex-direction: column; gap: 14px; align-items: flex-start; }
+            .main { padding: 18px; gap: 18px; }
+            .panel, .card { padding: 18px; }
+            .panel h3 { font-size: 20px; }
+            .chart-shell { height: 280px; min-height: 280px; }
+            .modal-actions { flex-direction: column-reverse; }
+            .modal-btn { width: 100%; }
+        }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="topbar">
-            <button onclick="pingDS()" style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 14px; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); transition: 0.2s;">
-                    <i class="fas fa-exclamation-triangle"></i> Ping DS Team
-            </button>
-            <div class="logo">
-                <h2>CryptoPredict Admin.</h2>
-            </div>
-            <div class="search">
-                <input type="text" name="search" placeholder="Search logs or users...">
-                <i class="fas fa-search"></i>
-            </div>
-            
-            <div class="topbar-right">
-                <a href="/logout" class="btn-logout">
-                    Logout <i class="fas fa-sign-out-alt"></i>
-                </a>
+    <div class="topbar">
+        <button onclick="pingDS()" style="background: #e74c3c; color: white; border: none; padding: 10px 16px; border-radius: 24px; cursor: pointer; font-weight: 600;">
+            <i class="fas fa-exclamation-triangle"></i> Ping DS Team
+        </button>
+        <h2 style="color: #299b63;">CryptoPredict Admin</h2>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <span>{{ admin.full_name }}</span>
+            <a href="/logout" style="color: #e74c3c; text-decoration: none; font-weight: 600;">Logout</a>
+        </div>
+    </div>
 
-                <div class="user">
-                    <i class="fas fa-user-shield" style="font-size: 20px; color: #299b63;"></i>
-                    <span>Admin</span>
+    <div class="main">
+        <div class="cards">
+            <div class="card"><div><div class="number">{{ stats.active_users }}</div><div class="card-name">Active Users</div></div><i class="fas fa-users" style="font-size: 36px; color: #299b63;"></i></div>
+            <div class="card"><div><div class="number">{{ stats.api_requests }}</div><div class="card-name">Prediction Requests</div></div><i class="fas fa-server" style="font-size: 36px; color: #299b63;"></i></div>
+            <div class="card"><div><div class="number">{{ stats.monitored_coins }}</div><div class="card-name">Monitored Assets</div></div><i class="fab fa-bitcoin" style="font-size: 36px; color: #299b63;"></i></div>
+            <div class="card"><div><div class="number" style="color: #27ae60;">{{ stats.system_status }}</div><div class="card-name">System Status</div></div><i class="fas fa-check-circle" style="font-size: 36px; color: #299b63;"></i></div>
+        </div>
+
+        <div class="charts">
+            <div class="panel">
+                <h3>System Traffic</h3>
+                <div class="chart-shell">
+                    <canvas id="trafficChart"></canvas>
+                </div>
+            </div>
+            <div class="panel">
+                <h3>Prediction Distribution</h3>
+                <div class="chart-shell">
+                    <canvas id="distributionChart"></canvas>
                 </div>
             </div>
         </div>
-        
-        <div class="main">
-            <div class="cards">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">1,024</div>
-                        <div class="card-name">Active Users</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-users"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">8,450</div>
-                        <div class="card-name">API Requests</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-server"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number">2</div>
-                        <div class="card-name">Monitored Coins</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fab fa-bitcoin"></i>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="number" style="color: #27ae60;">Online</div>
-                        <div class="card-name">System Status</div>
-                    </div>
-                    <div class="icon-box">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
-            </div>
 
-            <div class="charts">
-                <div class="chart">
-                    <h2>System Traffic (Past 7 Days)</h2>
-                    <div class="chart-container">
-                        <canvas id="trafficChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart">
-                    <h2>Prediction Distribution</h2>
-                    <div class="chart-container">
-                        <canvas id="coinDistribution"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <div class="table-header">
-                    <h2>User Access Management</h2>
-                    <button class="btn-add"><i class="fas fa-plus"></i> Add New User</button>
-                </div>
+        <div class="panel">
+            <h3>User Access Management</h3>
+            <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
                             <th>Username</th>
-                            <th>Email (Contact)</th>
-                            <th>Role / Permission</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
                             <th>Last Login</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody">
-                        <tr>
-                            <td>Kien Nguyen</td>
-                            <td>kien.nguyen@hcmut.edu.vn</td>
-                            <td id="role_admin"><span class="badge admin">System Admin</span></td>
-                            <td>Just now</td>
-                            <td>
-                                <span style="color: #bdc3c7; font-size: 13px; font-style: italic;">Protected</span>
+                        {% for item in users %}
+                        <tr data-username="{{ item.username }}">
+                            <td>{{ item.username }}</td>
+                            <td>{{ item.full_name }}</td>
+                            <td>{{ item.email }}</td>
+                            <td id="role_{{ item.username }}"><span class="badge {{ item.role }}">{{ item.role }}</span></td>
+                        <td class="login-time">
+                            {% set last_login = (item.last_login_at or '') %}
+                            {% if last_login %}
+                            {{ last_login[:10] }}<br>
+                            <span class="time-sub">{{ last_login[11:19] }}</span>
+                            {% else %}
+                            <span class="time-sub">Never</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.username != admin.username %}
+                            <button class="action-btn edit-btn" onclick="editRole('{{ item.username }}', '{{ item.role }}')"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete-btn" onclick="deleteUser('{{ item.username }}')"><i class="fas fa-trash"></i></button>
+                            {% else %}
+                                Protected
+                                {% endif %}
                             </td>
                         </tr>
-                        <tr>
-                            <td>Canh Phi</td>
-                            <td>phi.canhvan@hcmut.edu.vn</td>
-                            <td id="role_lam_ai"><span class="badge scientist">Data Scientist</span></td>
-                            <td>2 hours ago</td>
-                            <td>
-                                <button class="action-btn edit-btn" title="Edit Role" onclick="editRole('lam_ai')"><i class="fas fa-edit"></i></button>
-                                <button class="action-btn delete-btn" title="Delete User" onclick="deleteUser(this, 'lam_ai')"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Thai Pham</td>
-                            <td>thaipham@gmail.com</td>
-                            <td id="role_investor_01"><span class="badge user">End User</span></td>
-                            <td>1 day ago</td>
-                            <td>
-                                <button class="action-btn edit-btn" title="Edit Role" onclick="editRole('investor_01')"><i class="fas fa-edit"></i></button>
-                                <button class="action-btn delete-btn" title="Delete User" onclick="deleteUser(this, 'investor_01')"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            <div class="table-container">
-                <div class="table-header">
-                    <h2>System Audit Logs</h2>
-                </div>
+        <div class="panel">
+            <h3>System Audit Logs</h3>
+            <div class="filter-bar">
+                <select id="eventFilter" class="filter-select" onchange="filterAuditLogs()">
+                    <option value="all">All Events</option>
+                    {% for log in logs %}
+                    <option value="{{ log.event_type }}">{{ log.event_type.replace('_', ' ') }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
                             <th>Timestamp</th>
-                            <th>Event Description</th>
+                            <th>Actor</th>
+                            <th>Event</th>
+                            <th>Description</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="color: #7f8c8d;">2026-04-07 20:15</td>
-                            <td>User <b>investor_01</b> predicted BTC (30 days)</td>
-                            <td><span style="color: #27ae60;"><i class="fas fa-check"></i> Success</span></td>
+                        {% for log in logs %}
+                        <tr data-event-type="{{ log.event_type }}">
+                            <td style="white-space:nowrap;">
+                                {% set created = (log.created_at or '') %}
+                                {{ created[:10] }}<br>
+                                <span style="color:#7f8c8d; font-size:12px;">{{ created[11:19] }}</span>
+                            </td>
+                            <td>
+                                <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-start;">
+                                    <strong style="color:#233042;">{{ log.actor_username }}</strong>
+                                    <span class="badge {{ log.actor_role }}">{{ log.actor_role }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge event-{{ log.event_type }}">{{ log.event_type.replace('_', ' ') }}</span>
+                            </td>
+                            <td class="log-description" title="{{ log.description }}">
+                                {{ log.description if log.description|length <= 88 else log.description[:88] ~ '...' }}
+                            </td>
+                            <td>
+                                <span class="badge {% if log.status == 'success' %}status-success{% elif log.status == 'warning' %}status-warning{% elif log.status == 'error' %}status-error{% else %}status-info{% endif %}">
+                                    {{ log.status }}
+                                </span>
+                            </td>
                         </tr>
-                        <tr>
-                            <td style="color: #7f8c8d;">2026-04-07 18:30</td>
-                            <td>Admin modified role for <b>phi_canh</b></td>
-                            <td><span style="color: #27ae60;"><i class="fas fa-check"></i> Success</span></td>
-                        </tr>
-                        <tr>
-                            <td style="color: #7f8c8d;">2026-04-07 09:12</td>
-                            <td>Failed login attempt (IP: 192.168.1.45)</td>
-                            <td><span style="color: #e74c3c;"><i class="fas fa-times"></i> Warning</span></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <div id="pingModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pingModalTitle">
+            <div class="modal-title" id="pingModalTitle">Ping Data Science Team</div>
+            <p class="modal-subtitle">Send a focused operational note to the Data Science dashboard. This is useful for drift checks, urgent review requests, or retraining coordination.</p>
+            <label class="modal-label" for="pingMessage">Alert message</label>
+            <textarea id="pingMessage" class="modal-textarea" placeholder="Example: Please review recent prediction drift on BTC and validate the active model."></textarea>
+            <div id="pingError" class="modal-error"></div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn secondary" onclick="closePingModal()">Cancel</button>
+                <button type="button" id="pingSubmitBtn" class="modal-btn primary" onclick="submitPing()">Send Alert</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+            <div class="modal-title" id="deleteModalTitle">Delete User</div>
+            <p class="modal-subtitle">This action removes the selected user account from the system. Audit history remains, but the user will no longer be able to log in.</p>
+            <div style="padding: 14px 16px; border-radius: 14px; background: #fdf2f2; color: #8e2f28; font-weight: 600;">
+                <i class="fas fa-user-times"></i>
+                <span id="deleteTargetLabel">User</span>
+            </div>
+            <div id="deleteError" class="modal-error"></div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" id="deleteSubmitBtn" class="modal-btn primary" onclick="confirmDeleteUser()">Delete User</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastStack" class="toast-stack"></div>
+
+    <script id="traffic-data" type="application/json">{{ traffic | tojson }}</script>
+    <script id="distribution-data" type="application/json">{{ distribution | tojson }}</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script>
-        // 1. System Traffic (Line Chart)
-        var ctxTraffic = document.getElementById('trafficChart').getContext('2d');
-        var trafficChart = new Chart(ctxTraffic, {
+        const trafficData = JSON.parse(document.getElementById('traffic-data').textContent);
+        const distributionData = JSON.parse(document.getElementById('distribution-data').textContent);
+
+        new Chart(document.getElementById('trafficChart').getContext('2d'), {
             type: 'line',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: trafficData.map(item => item.day),
                 datasets: [{
-                    label: 'API Calls',
-                    data: [120, 190, 300, 250, 420, 380, 500],
-                    backgroundColor: 'rgba(41, 155, 99, 0.2)',
+                    label: 'Predictions',
+                    data: trafficData.map(item => item.total),
+                    backgroundColor: 'rgba(41, 155, 99, 0.15)',
                     borderColor: 'rgb(41, 155, 99)',
                     borderWidth: 2,
                     tension: 0.3,
@@ -255,67 +320,179 @@
             options: { responsive: true, maintainAspectRatio: false }
         });
 
-        // 2. Prediction Distribution (Doughnut Chart)
-        var ctxCoin = document.getElementById('coinDistribution').getContext('2d');
-        var coinChart = new Chart(ctxCoin, {
+        new Chart(document.getElementById('distributionChart').getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: ['Bitcoin (BTC)', 'Ethereum (ETH)'],
+                labels: distributionData.map(item => item.asset_symbol),
                 datasets: [{
-                    data: [70, 30],
-                    backgroundColor: ['rgba(247, 147, 26, 0.8)', 'rgba(98, 126, 234, 0.8)'],
-                    borderWidth: 1
+                    data: distributionData.map(item => item.total),
+                    backgroundColor: ['rgba(247, 147, 26, 0.8)', 'rgba(98, 126, 234, 0.8)', 'rgba(46, 204, 113, 0.8)']
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false }
+            options: { responsive: true, maintainAspectRatio: false, cutout: '62%' }
         });
 
-        // Toggle Edit Mode for User Role
-        function editRole(username) {
-            let td = document.getElementById('role_' + username);
-            
-            td.innerHTML = `
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <select id="select_${username}" style="padding: 5px; border-radius: 5px; border: 1px solid #ccc; font-family: 'Poppins'; outline: none;">
-                        <option value="admin">System Admin</option>
-                        <option value="scientist">Data Scientist</option>
-                        <option value="user">End User</option>
+        function editRole(username, currentRole) {
+            const cell = document.getElementById(`role_${username}`);
+            cell.innerHTML = `
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <select id="select_${username}" style="padding:6px 10px;">
+                        <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>admin</option>
+                        <option value="scientist" ${currentRole === 'scientist' ? 'selected' : ''}>scientist</option>
+                        <option value="user" ${currentRole === 'user' ? 'selected' : ''}>user</option>
                     </select>
-                    <button onclick="saveRole('${username}')" style="background: #299b63; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;">Save</button>
+                    <button onclick="saveRole('${username}')" style="background:#299b63;color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;">Save</button>
                 </div>
             `;
         }
 
-        // Save New Role and Update UI
-        function saveRole(username) {
-            let select = document.getElementById('select_' + username);
-            let newRoleValue = select.value;
-            let newRoleName = select.options[select.selectedIndex].text;
-            let td = document.getElementById('role_' + username);
-
-            td.innerHTML = `<span class="badge ${newRoleValue}">${newRoleName}</span>`;
-
-            alert(`[System Alert] Successfully changed role for user '${username}' to '${newRoleName}'.`);
-        }
-
-        // Delete User from Table
-        function deleteUser(btn, username) {
-            if(confirm(`WARNING: Are you sure you want to delete user '${username}'?\nThis action cannot be undone.`)) {
-                let row = btn.parentNode.parentNode;
-                row.parentNode.removeChild(row);
-                alert(`User '${username}' has been completely removed from the system.`);
+        async function saveRole(username) {
+            const role = document.getElementById(`select_${username}`).value;
+            const response = await fetch(`/admin/users/${username}/role`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role })
+            });
+            const payload = await response.json();
+            if (!response.ok) {
+                alert(payload.error || 'Role update failed.');
+                return;
             }
+            document.getElementById(`role_${username}`).innerHTML = `<span class="badge ${role}">${role}</span>`;
         }
-        
-        // Admin sends alert to DS Team
+
+        async function deleteUser(username) {
+            const modal = document.getElementById('deleteModal');
+            document.getElementById('deleteTargetLabel').textContent = `Delete ${username}`;
+            document.getElementById('deleteError').textContent = '';
+            modal.dataset.username = username;
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+            modal.dataset.username = '';
+        }
+
+        async function confirmDeleteUser() {
+            const modal = document.getElementById('deleteModal');
+            const username = modal.dataset.username;
+            const error = document.getElementById('deleteError');
+            const submitBtn = document.getElementById('deleteSubmitBtn');
+            if (!username) return;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Deleting...';
+            const response = await fetch(`/admin/users/${username}`, { method: 'DELETE' });
+            const payload = await response.json();
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Delete User';
+            if (!response.ok) {
+                error.textContent = payload.error || 'The user could not be removed.';
+                return;
+            }
+            document.querySelector(`tr[data-username="${username}"]`).remove();
+            closeDeleteModal();
+            showToast('User removed', payload.message || `User ${username} was removed.`);
+        }
+
         function pingDS() {
-            let message = prompt("Enter alert message for Data Scientist:", "Check the recent volatility in ETH dataset. Please retrain!");
-            
-            if (message != null && message !== "") {
-                alert(`[System Success] Alert sent to Data Scientist's dashboard.\nMessage: "${message}"`);
-            }
+            const modal = document.getElementById('pingModal');
+            const field = document.getElementById('pingMessage');
+            const error = document.getElementById('pingError');
+            field.value = 'Please review recent prediction drift.';
+            error.textContent = '';
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => field.focus(), 0);
         }
+
+        function closePingModal() {
+            const modal = document.getElementById('pingModal');
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        async function submitPing() {
+            const field = document.getElementById('pingMessage');
+            const error = document.getElementById('pingError');
+            const submitBtn = document.getElementById('pingSubmitBtn');
+            const message = field.value.trim();
+            if (!message) {
+                error.textContent = 'Please enter an alert message before sending.';
+                field.focus();
+                return;
+            }
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            const response = await fetch('/admin/ping-ds', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            const payload = await response.json();
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Alert';
+            if (!response.ok) {
+                error.textContent = payload.error || 'The alert could not be sent.';
+                return;
+            }
+            closePingModal();
+            showToast('Alert sent', payload.message || 'Message sent to the Data Science team.');
+        }
+
+        function showToast(title, text, isError = false) {
+            const stack = document.getElementById('toastStack');
+            const toast = document.createElement('div');
+            toast.className = `toast${isError ? ' error' : ''}`;
+            toast.innerHTML = `<div class="toast-title">${title}</div><div class="toast-text">${text}</div>`;
+            stack.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3600);
+        }
+
+        function filterAuditLogs() {
+            const selected = document.getElementById('eventFilter').value;
+            document.querySelectorAll('tbody tr[data-event-type]').forEach(row => {
+                row.style.display = selected === 'all' || row.dataset.eventType === selected ? '' : 'none';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventFilter = document.getElementById('eventFilter');
+            if (!eventFilter) return;
+            const seen = new Set();
+            Array.from(eventFilter.options).forEach(option => {
+                if (seen.has(option.value)) {
+                    option.remove();
+                    return;
+                }
+                seen.add(option.value);
+            });
+            const modal = document.getElementById('pingModal');
+            modal.addEventListener('click', event => {
+                if (event.target === modal) {
+                    closePingModal();
+                }
+            });
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('click', event => {
+                if (event.target === deleteModal) {
+                    closeDeleteModal();
+                }
+            });
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && modal.classList.contains('open')) {
+                    closePingModal();
+                }
+                if (event.key === 'Escape' && deleteModal.classList.contains('open')) {
+                    closeDeleteModal();
+                }
+            });
+        });
     </script>
 </body>
-
 </html>
