@@ -115,6 +115,14 @@
 			</div>
 			<button type="submit" class="login-btn">Login</button>
         </form>
+        {% if default_passwords %}
+        <div class="demo-credentials">
+            <strong>Seed accounts</strong><br>
+            admin / {{ default_passwords.admin }}<br>
+            scientist / {{ default_passwords.scientist }}<br>
+            investor / {{ default_passwords.user }}
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>

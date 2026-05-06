@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .DS_Store
 
 .venv/
@@ -20,3 +21,14 @@ instance/
 .env.*
 
 *.log
+=======
+__pycache__/
+*.pyc
+*.db
+*.db-journal
+crypto_predict_runtime.json
+models/
+instance/
+.env
+uploads/
+>>>>>>> origin/basic-implement

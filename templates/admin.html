@@ -1,95 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <title>System Admin Dashboard</title>
-
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
+        
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: #f4f7f6; color: #333; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); gap: 18px; flex-wrap: wrap; }
+        
+        /* Topbar Section */
+        .topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .topbar .logo h2 { color: #299b63; margin: 0; }
-        .topbar-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; }
-        .user { background: #ecf0f1; padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 500; }
+        .topbar .search { position: relative; width: 300px; }
+        .topbar .search input { width: 100%; padding: 10px 40px 10px 20px; border-radius: 20px; border: 1px solid #ccc; outline: none; }
+        .topbar .search i { position: absolute; right: 15px; top: 12px; color: #888; }
+        
+        /* Topbar Right Side */
+        .topbar-right { display: flex; align-items: center; gap: 25px; }
+        .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; transition: 0.3s; }
+        .btn-logout:hover { color: #c0392b; }
+        .user { background: #ecf0f1; padding: 8px 12px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2c3e50; font-weight: 500;}
+        
+        /* Main Content */
         .main { padding: 30px; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 30px; }
-        .card { background: #fff; padding: 28px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Card Layout */
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; }
+        .card { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; transition: transform 0.3s;}
+        .card:hover { transform: translateY(-5px); }
         .card .number { font-size: 32px; font-weight: 600; color: #2c3e50; }
         .card .card-name { color: #7f8c8d; font-size: 15px; margin-top: 5px; }
-        .card .icon-box i { font-size: 40px; color: #299b63; background: #e9f7ef; padding: 15px; border-radius: 10px; }
+        .card .icon-box i { font-size: 40px; color: #299b63; background: #e9f7ef; padding: 15px; border-radius: 10px;}
+        
+        /* Chart Section */
         .charts { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        .chart, .table-container, .form-panel { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .chart h2, .table-header h2, .form-panel h2 { margin-bottom: 20px; color: #34495e; font-size: 18px; }
+        .chart { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .chart h2 { margin-bottom: 20px; color: #34495e; font-size: 18px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px;}
         .chart-container { position: relative; height: 300px; width: 100%; display: flex; justify-content: center; }
-        .stack { display: grid; gap: 30px; margin-top: 30px; }
-        .flash-list { display: grid; gap: 12px; margin-bottom: 20px; }
-        .flash { padding: 14px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; }
-        .flash.success { background: #eaf8ef; color: #1d7f46; }
-        .flash.error { background: #fceceb; color: #c0392b; }
-        .flash.info { background: #eef5fb; color: #2c6eaa; }
-        .flash.is-temporary { animation: fadeIn 0.18s ease-out; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-        .field { display: flex; flex-direction: column; gap: 8px; }
-        .field label { font-size: 13px; color: #667; font-weight: 600; }
-        .field input, .field select, .notify-form textarea { width: 100%; border: 1px solid #d7dee3; border-radius: 10px; padding: 11px 12px; outline: none; font-size: 14px; }
-        .form-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
-        .btn-primary, .btn-secondary, .btn-danger { border: none; border-radius: 10px; padding: 10px 14px; cursor: pointer; font-size: 14px; font-weight: 600; text-decoration: none; }
-        .btn-primary { background: #299b63; color: #fff; }
-        .btn-secondary { background: #edf2f7; color: #34495e; }
-        .btn-danger { background: #fceceb; color: #c0392b; }
-        .notify-form { display: grid; gap: 12px; }
-        .table-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-        .section-search { position: relative; width: 320px; max-width: 100%; }
-        .section-search input { width: 100%; padding: 10px 40px 10px 18px; border-radius: 20px; border: 1px solid #ccc; outline: none; }
-        .section-search button { position: absolute; right: 4px; top: 4px; background: #299b63; border: none; color: #fff; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; }
+
+        /* Admin Table Container */
+        .table-container { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-top: 30px; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .table-header h2 { color: #34495e; font-size: 18px; }
+        .btn-add { background: #299b63; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: 600;}
+        
         table { width: 100%; border-collapse: collapse; }
         thead { background: #f4f7f6; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle; }
-        th { color: #7f8c8d; font-weight: 600; font-size: 14px; text-transform: uppercase; }
-        td { color: #2c3e50; font-size: 14px; font-weight: 500; }
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { color: #7f8c8d; font-weight: 600; font-size: 14px; text-transform: uppercase;}
+        td { color: #2c3e50; font-size: 14px; font-weight: 500;}
+        
+        /* Role Badges */
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge.admin { background: #ffeaa7; color: #d35400; }
         .badge.scientist { background: #dff9fb; color: #2980b9; }
         .badge.user { background: #e9f7ef; color: #27ae60; }
-        .row-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .role-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .role-form select { min-width: 150px; }
-        .muted { color: #95a5a6; font-size: 13px; }
-        .status-success { color: #27ae60; }
-        .status-warning { color: #e67e22; }
-        .empty-state { padding: 18px 0; color: #7f8c8d; font-style: italic; }
-        .btn-secondary.is-loading { opacity: 0.7; pointer-events: none; }
-        .btn-danger.is-loading { opacity: 0.7; pointer-events: none; }
-        .btn-primary.is-loading { opacity: 0.7; pointer-events: none; }
-        .section-search button.is-loading { opacity: 0.8; pointer-events: none; }
-        .badge.is-updating { opacity: 0.65; }
-        tr.is-removing { opacity: 0.45; transition: opacity 0.2s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 920px) {
-            .charts { grid-template-columns: 1fr; }
-        }
+        
+        /* Action Buttons */
+        .action-btn { background: none; border: none; cursor: pointer; margin-right: 15px; font-size: 16px; transition: 0.2s;}
+        .edit-btn { color: #3498db; }
+        .delete-btn { color: #e74c3c; }
+        .action-btn:hover { transform: scale(1.2); }
     </style>
 </head>
-
 <body>
     <div class="container">
         <div class="topbar">
+            <button onclick="pingDS()" style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 14px; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); transition: 0.2s;">
+                    <i class="fas fa-exclamation-triangle"></i> Ping DS Team
+            </button>
             <div class="logo">
                 <h2>CryptoPredict Admin.</h2>
             </div>
-
+            <div class="search">
+                <input type="text" name="search" placeholder="Search logs or users...">
+                <i class="fas fa-search"></i>
+            </div>
+            
             <div class="topbar-right">
                 <a href="/logout" class="btn-logout">
                     Logout <i class="fas fa-sign-out-alt"></i>
@@ -101,22 +92,12 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="main">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="flash-list">
-                        {% for category, message in messages %}
-                            <div class="flash {{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
             <div class="cards">
                 <div class="card">
                     <div class="card-content">
-                        <div class="number" id="active-users-value">{{ stats.active_users }}</div>
+                        <div class="number">1,024</div>
                         <div class="card-name">Active Users</div>
                     </div>
                     <div class="icon-box">
@@ -125,7 +106,7 @@
                 </div>
                 <div class="card">
                     <div class="card-content">
-                        <div class="number" id="api-requests-value">{{ stats.api_requests }}</div>
+                        <div class="number">8,450</div>
                         <div class="card-name">API Requests</div>
                     </div>
                     <div class="icon-box">
@@ -134,7 +115,7 @@
                 </div>
                 <div class="card">
                     <div class="card-content">
-                        <div class="number" id="monitored-coins-value">{{ stats.monitored_coins }}</div>
+                        <div class="number">2</div>
                         <div class="card-name">Monitored Coins</div>
                     </div>
                     <div class="icon-box">
@@ -143,7 +124,7 @@
                 </div>
                 <div class="card">
                     <div class="card-content">
-                        <div class="number" id="system-status-value" style="color: #27ae60;">{{ stats.system_status }}</div>
+                        <div class="number" style="color: #27ae60;">Online</div>
                         <div class="card-name">System Status</div>
                     </div>
                     <div class="icon-box">
@@ -152,399 +133,148 @@
                 </div>
             </div>
 
-            <div class="charts">
-                <div class="chart">
-                    <h2>System Traffic (Past 7 Days)</h2>
-                    <div class="chart-container">
-                        <canvas id="trafficChart"></canvas>
-                    </div>
+        <div class="charts">
+            <div class="panel">
+                <h3>System Traffic</h3>
+                <div class="chart-shell">
+                    <canvas id="trafficChart"></canvas>
                 </div>
-                <div class="chart">
-                    <h2>Prediction Distribution</h2>
-                    <div class="chart-container">
-                        <canvas id="coinDistribution"></canvas>
-                    </div>
+            </div>
+            <div class="panel">
+                <h3>Prediction Distribution</h3>
+                <div class="chart-shell">
+                    <canvas id="distributionChart"></canvas>
                 </div>
             </div>
 
-            <div class="stack">
-                <div class="form-panel">
-                    <h2>Send Data Scientist Alert</h2>
-                    <form class="notify-form" action="{{ url_for('notify_scientists') }}" method="POST">
-                        <textarea name="message" rows="3" placeholder="Enter a message for the Data Scientist dashboard..." required></textarea>
-                        <div class="form-actions">
-                            <button class="btn-primary" type="submit"><i class="fas fa-paper-plane"></i> Send Alert</button>
-                        </div>
-                    </form>
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>User Access Management</h2>
+                    <button class="btn-add"><i class="fas fa-plus"></i> Add New User</button>
                 </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email (Contact)</th>
+                            <th>Role / Permission</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr>
+                            <td>Kien Nguyen</td>
+                            <td>kien.nguyen@hcmut.edu.vn</td>
+                            <td id="role_admin"><span class="badge admin">System Admin</span></td>
+                            <td>Just now</td>
+                            <td>
+                                <span style="color: #bdc3c7; font-size: 13px; font-style: italic;">Protected</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Canh Phi</td>
+                            <td>phi.canhvan@hcmut.edu.vn</td>
+                            <td id="role_lam_ai"><span class="badge scientist">Data Scientist</span></td>
+                            <td>2 hours ago</td>
+                            <td>
+                                <button class="action-btn edit-btn" title="Edit Role" onclick="editRole('lam_ai')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" title="Delete User" onclick="deleteUser(this, 'lam_ai')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Thai Pham</td>
+                            <td>thaipham@gmail.com</td>
+                            <td id="role_investor_01"><span class="badge user">End User</span></td>
+                            <td>1 day ago</td>
+                            <td>
+                                <button class="action-btn edit-btn" title="Edit Role" onclick="editRole('investor_01')"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn" title="Delete User" onclick="deleteUser(this, 'investor_01')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <div class="form-panel">
-                    <h2>Add New User</h2>
-                    <form id="add-user-form" action="{{ url_for('add_user') }}" method="POST">
-                        <div class="form-grid">
-                            <div class="field">
-                                <label for="username">Username</label>
-                                <input id="username" name="username" type="text" required>
-                            </div>
-                            <div class="field">
-                                <label for="display_name">Display Name</label>
-                                <input id="display_name" name="display_name" type="text" required>
-                            </div>
-                            <div class="field">
-                                <label for="email">Email</label>
-                                <input id="email" name="email" type="email" required>
-                            </div>
-                            <div class="field">
-                                <label for="password">Password</label>
-                                <input id="password" name="password" type="text" required>
-                            </div>
-                            <div class="field">
-                                <label for="role">Role</label>
-                                <select id="role" name="role" required>
-                                    <option value="user">End User</option>
-                                    <option value="scientist">Data Scientist</option>
-                                    <option value="admin">System Admin</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button class="btn-primary" type="submit"><i class="fas fa-user-plus"></i> Create User</button>
-                        </div>
-                    </form>
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>System Audit Logs</h2>
                 </div>
-
-                <div class="table-container" id="user-access-management">
-                    <div class="table-header">
-                        <h2>User Access Management</h2>
-                        <div class="muted" id="user-results-count">{{ users|length }} result(s)</div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Display Name</th>
-                                <th>Email (Contact)</th>
-                                <th>Role / Permission</th>
-                                <th>Last Login</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-table-body">
-                            {% if users %}
-                                {% for user in users %}
-                                    <tr>
-                                        <td><strong>{{ user.username }}</strong></td>
-                                        <td>{{ user.display_name }}</td>
-                                        <td>{{ user.email }}</td>
-                                            <td><span class="badge {{ user.role }} role-badge">{{ user.role_label }}</span></td>
-                                            <td>{{ user.last_login }}</td>
-                                            <td>
-                                                {% if user.protected %}
-                                                    <span class="muted">Protected account</span>
-                                                {% else %}
-                                                <div class="row-actions">
-                                                    <form class="role-form ajax-role-form" action="{{ url_for('update_user_role', username=user.username) }}" method="POST">
-                                                        <select name="role">
-                                                            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>System Admin</option>
-                                                            <option value="scientist" {% if user.role == 'scientist' %}selected{% endif %}>Data Scientist</option>
-                                                            <option value="user" {% if user.role == 'user' %}selected{% endif %}>End User</option>
-                                                        </select>
-                                                        <button class="btn-secondary" type="submit"><i class="fas fa-save"></i> Save</button>
-                                                    </form>
-                                                    <form class="ajax-delete-form" action="{{ url_for('delete_user', username=user.username) }}" method="POST" data-confirm="Delete user {{ user.username }}? This cannot be undone.">
-                                                        <button class="btn-danger" type="submit"><i class="fas fa-trash"></i> Delete</button>
-                                                    </form>
-                                                </div>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="6" class="empty-state">No users matched your search.</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="table-container" id="audit-logs">
-                    <div class="table-header">
-                        <h2>System Audit Logs</h2>
-                        <div class="row-actions">
-                            <form class="section-search ajax-log-search-form" action="{{ url_for('search_audit_logs') }}" method="GET">
-                                <input type="text" name="q" value="{{ search_query }}" placeholder="Search logs or users...">
-                                <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
-                            </form>
-                            {% if search_query %}
-                                <button class="btn-secondary" id="clear-log-search" type="button">Clear Search</button>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Event Description</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="audit-logs-body">
-                            {% if audit_logs %}
-                                {% for log in audit_logs %}
-                                    <tr>
-                                        <td style="color: #7f8c8d;">{{ log.timestamp }}</td>
-                                        <td>{{ log.event }}</td>
-                                        <td class="{% if log.status == 'Warning' %}status-warning{% else %}status-success{% endif %}">
-                                            {% if log.status == 'Warning' %}
-                                                <i class="fas fa-exclamation-triangle"></i>
-                                            {% else %}
-                                                <i class="fas fa-check"></i>
-                                            {% endif %}
-                                            {{ log.status }}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="3" class="empty-state">No audit logs matched your search.</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Event Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: #7f8c8d;">2026-04-07 20:15</td>
+                            <td>User <b>investor_01</b> predicted BTC (30 days)</td>
+                            <td><span style="color: #27ae60;"><i class="fas fa-check"></i> Success</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #7f8c8d;">2026-04-07 18:30</td>
+                            <td>Admin modified role for <b>phi_canh</b></td>
+                            <td><span style="color: #27ae60;"><i class="fas fa-check"></i> Success</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #7f8c8d;">2026-04-07 09:12</td>
+                            <td>Failed login attempt (IP: 192.168.1.45)</td>
+                            <td><span style="color: #e74c3c;"><i class="fas fa-times"></i> Warning</span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
+    <div id="pingModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pingModalTitle">
+            <div class="modal-title" id="pingModalTitle">Ping Data Science Team</div>
+            <p class="modal-subtitle">Send a focused operational note to the Data Science dashboard. This is useful for drift checks, urgent review requests, or retraining coordination.</p>
+            <label class="modal-label" for="pingMessage">Alert message</label>
+            <textarea id="pingMessage" class="modal-textarea" placeholder="Example: Please review recent prediction drift on BTC and validate the active model."></textarea>
+            <div id="pingError" class="modal-error"></div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn secondary" onclick="closePingModal()">Cancel</button>
+                <button type="button" id="pingSubmitBtn" class="modal-btn primary" onclick="submitPing()">Send Alert</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+            <div class="modal-title" id="deleteModalTitle">Delete User</div>
+            <p class="modal-subtitle">This action removes the selected user account from the system. Audit history remains, but the user will no longer be able to log in.</p>
+            <div style="padding: 14px 16px; border-radius: 14px; background: #fdf2f2; color: #8e2f28; font-weight: 600;">
+                <i class="fas fa-user-times"></i>
+                <span id="deleteTargetLabel">User</span>
+            </div>
+            <div id="deleteError" class="modal-error"></div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" id="deleteSubmitBtn" class="modal-btn primary" onclick="confirmDeleteUser()">Delete User</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastStack" class="toast-stack"></div>
+
+    <script id="traffic-data" type="application/json">{{ traffic | tojson }}</script>
+    <script id="distribution-data" type="application/json">{{ distribution | tojson }}</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script>
-        const adminScrollKey = 'admin-dashboard-scroll-y';
-        let flashList = document.querySelector('.flash-list');
-
-        function ensureFlashList() {
-            if (flashList) {
-                return flashList;
-            }
-
-            const main = document.querySelector('.main');
-            flashList = document.createElement('div');
-            flashList.className = 'flash-list';
-            main.prepend(flashList);
-            return flashList;
-        }
-
-        function showTransientFlash(message, category) {
-            const list = ensureFlashList();
-            const item = document.createElement('div');
-            item.className = `flash ${category || 'info'} is-temporary`;
-            item.textContent = message;
-            list.prepend(item);
-            window.setTimeout(() => {
-                item.remove();
-            }, 3000);
-        }
-
-        function renderAuditLogs(logs) {
-            const tbody = document.getElementById('audit-logs-body');
-            if (!logs.length) {
-                tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No audit logs matched your search.</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = logs.map((log) => {
-                const isWarning = log.status === 'Warning';
-                const statusClass = isWarning ? 'status-warning' : 'status-success';
-                const iconClass = isWarning ? 'fa-exclamation-triangle' : 'fa-check';
-                return `
-                    <tr>
-                        <td style="color: #7f8c8d;">${log.timestamp}</td>
-                        <td>${log.event}</td>
-                        <td class="${statusClass}">
-                            <i class="fas ${iconClass}"></i>
-                            ${log.status}
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        async function refreshAuditLogs() {
-            const ajaxLogSearchForm = document.querySelector('.ajax-log-search-form');
-            if (!ajaxLogSearchForm) {
-                return;
-            }
-
-            const params = new URLSearchParams(new FormData(ajaxLogSearchForm));
-
-            try {
-                const response = await fetch(`${ajaxLogSearchForm.action}?${params.toString()}`, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                const payload = await response.json();
-                if (!response.ok || !payload.ok) {
-                    return;
-                }
-
-                renderAuditLogs(payload.logs || []);
-            } catch (error) {
-                console.error('Failed to refresh audit logs:', error);
-            }
-        }
-
-        function renderEmptyUsersState() {
-            const tbody = document.querySelector('#user-access-management tbody');
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No users matched your search.</td></tr>';
-        }
-
-        function buildUserRow(user) {
-            return `
-                <tr>
-                    <td><strong>${user.username}</strong></td>
-                    <td>${user.display_name}</td>
-                    <td>${user.email}</td>
-                    <td><span class="badge ${user.role} role-badge">${user.role_label}</span></td>
-                    <td>${user.last_login}</td>
-                    <td>
-                        <div class="row-actions">
-                            <form class="role-form ajax-role-form" action="/admin/users/${encodeURIComponent(user.username)}/role" method="POST">
-                                <select name="role">
-                                    <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>System Admin</option>
-                                    <option value="scientist" ${user.role === 'scientist' ? 'selected' : ''}>Data Scientist</option>
-                                    <option value="user" ${user.role === 'user' ? 'selected' : ''}>End User</option>
-                                </select>
-                                <button class="btn-secondary" type="submit"><i class="fas fa-save"></i> Save</button>
-                            </form>
-                            <form class="ajax-delete-form" action="/admin/users/${encodeURIComponent(user.username)}/delete" method="POST" data-confirm="Delete user ${user.username}? This cannot be undone.">
-                                <button class="btn-danger" type="submit"><i class="fas fa-trash"></i> Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        function bindRoleForm(form) {
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const submitButton = form.querySelector('button[type="submit"]');
-                const badge = form.closest('tr').querySelector('.role-badge');
-                const select = form.querySelector('select[name="role"]');
-                const previousRole = badge.className;
-                const previousLabel = badge.textContent;
-
-                submitButton.classList.add('is-loading');
-                submitButton.textContent = 'Saving...';
-                badge.classList.add('is-updating');
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        },
-                        body: new URLSearchParams(new FormData(form)).toString()
-                    });
-
-                    const payload = await response.json();
-                    if (!response.ok || !payload.ok) {
-                        throw new Error(payload.message || 'Unable to update role.');
-                    }
-
-                    badge.className = `badge ${payload.role} role-badge`;
-                    badge.textContent = payload.role_label;
-                    showTransientFlash(payload.message, payload.category || 'success');
-                } catch (error) {
-                    badge.className = previousRole;
-                    badge.textContent = previousLabel;
-                    showTransientFlash(error.message, 'error');
-                    select.focus();
-                } finally {
-                    submitButton.classList.remove('is-loading');
-                    submitButton.innerHTML = '<i class="fas fa-save"></i> Save';
-                    badge.classList.remove('is-updating');
-                }
-            });
-        }
-
-        function bindDeleteForm(form) {
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const confirmed = window.confirm(form.dataset.confirm || 'Delete this user?');
-                if (!confirmed) {
-                    return;
-                }
-
-                const submitButton = form.querySelector('button[type="submit"]');
-                const row = form.closest('tr');
-                const resultsCount = document.getElementById('user-results-count');
-                const originalHtml = submitButton.innerHTML;
-
-                submitButton.classList.add('is-loading');
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-                row.classList.add('is-removing');
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-                    const payload = await response.json();
-                    if (!response.ok || !payload.ok) {
-                        throw new Error(payload.message || 'Unable to delete user.');
-                    }
-
-                    row.remove();
-                    if (resultsCount) {
-                        const remainingRows = Array.from(document.querySelectorAll('#user-access-management tbody tr'))
-                            .filter((item) => !item.querySelector('.empty-state')).length;
-                        resultsCount.textContent = `${remainingRows} result(s)`;
-                        if (remainingRows === 0) {
-                            renderEmptyUsersState();
-                        }
-                    }
-                    showTransientFlash(payload.message, payload.category || 'success');
-                } catch (error) {
-                    row.classList.remove('is-removing');
-                    showTransientFlash(error.message, 'error');
-                } finally {
-                    submitButton.classList.remove('is-loading');
-                    submitButton.innerHTML = originalHtml;
-                }
-            });
-        }
-
-        function bindUserTableActions(scope = document) {
-            scope.querySelectorAll('.ajax-role-form').forEach((form) => {
-                if (!form.dataset.bound) {
-                    form.dataset.bound = 'true';
-                    bindRoleForm(form);
-                }
-            });
-
-            scope.querySelectorAll('.ajax-delete-form').forEach((form) => {
-                if (!form.dataset.bound) {
-                    form.dataset.bound = 'true';
-                    bindDeleteForm(form);
-                }
-            });
-        }
-
-        const ctxTraffic = document.getElementById('trafficChart').getContext('2d');
-        const trafficChart = new Chart(ctxTraffic, {
+        // 1. System Traffic (Line Chart)
+        var ctxTraffic = document.getElementById('trafficChart').getContext('2d');
+        var trafficChart = new Chart(ctxTraffic, {
             type: 'line',
             data: {
-                labels: {{ traffic_chart["labels"] | tojson }},
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 datasets: [{
                     label: 'API Calls',
-                    data: {{ traffic_chart["values"] | tojson }},
+                    data: [120, 190, 300, 250, 420, 380, 500],
                     backgroundColor: 'rgba(41, 155, 99, 0.2)',
                     borderColor: 'rgb(41, 155, 99)',
                     borderWidth: 2,
@@ -555,179 +285,66 @@
             options: { responsive: true, maintainAspectRatio: false }
         });
 
-        const ctxCoin = document.getElementById('coinDistribution').getContext('2d');
-        const coinChart = new Chart(ctxCoin, {
+        // 2. Prediction Distribution (Doughnut Chart)
+        var ctxCoin = document.getElementById('coinDistribution').getContext('2d');
+        var coinChart = new Chart(ctxCoin, {
             type: 'doughnut',
             data: {
-                labels: {{ prediction_distribution["labels"] | tojson }},
+                labels: ['Bitcoin (BTC)', 'Ethereum (ETH)'],
                 datasets: [{
-                    data: {{ prediction_distribution["values"] | tojson }},
+                    data: [70, 30],
                     backgroundColor: ['rgba(247, 147, 26, 0.8)', 'rgba(98, 126, 234, 0.8)'],
                     borderWidth: 1
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false }
+            options: { responsive: true, maintainAspectRatio: false, cutout: '62%' }
         });
 
-        function updateDashboardMetrics(payload) {
-            const activeUsersValue = document.getElementById('active-users-value');
-            const apiRequestsValue = document.getElementById('api-requests-value');
-            const monitoredCoinsValue = document.getElementById('monitored-coins-value');
-            const systemStatusValue = document.getElementById('system-status-value');
-
-            activeUsersValue.textContent = payload.stats.active_users;
-            apiRequestsValue.textContent = payload.stats.api_requests;
-            monitoredCoinsValue.textContent = payload.stats.monitored_coins;
-            systemStatusValue.textContent = payload.stats.system_status;
-
-            trafficChart.data.labels = payload.traffic_chart.labels;
-            trafficChart.data.datasets[0].data = payload.traffic_chart.values;
-            trafficChart.update();
-
-            coinChart.data.labels = payload.prediction_distribution.labels;
-            coinChart.data.datasets[0].data = payload.prediction_distribution.values;
-            coinChart.update();
+        // Toggle Edit Mode for User Role
+        function editRole(username) {
+            let td = document.getElementById('role_' + username);
+            
+            td.innerHTML = `
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <select id="select_${username}" style="padding: 5px; border-radius: 5px; border: 1px solid #ccc; font-family: 'Poppins'; outline: none;">
+                        <option value="admin">System Admin</option>
+                        <option value="scientist">Data Scientist</option>
+                        <option value="user">End User</option>
+                    </select>
+                    <button onclick="saveRole('${username}')" style="background: #299b63; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;">Save</button>
+                </div>
+            `;
         }
 
-        async function refreshDashboardMetrics() {
-            try {
-                const response = await fetch('/admin/dashboard-metrics', {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                const payload = await response.json();
-                if (!response.ok || !payload.ok) {
-                    return;
-                }
+        // Save New Role and Update UI
+        function saveRole(username) {
+            let select = document.getElementById('select_' + username);
+            let newRoleValue = select.value;
+            let newRoleName = select.options[select.selectedIndex].text;
+            let td = document.getElementById('role_' + username);
 
-                updateDashboardMetrics(payload);
-            } catch (error) {
-                console.error('Failed to refresh dashboard metrics:', error);
+            td.innerHTML = `<span class="badge ${newRoleValue}">${newRoleName}</span>`;
+
+            alert(`[System Alert] Successfully changed role for user '${username}' to '${newRoleName}'.`);
+        }
+
+        // Delete User from Table
+        function deleteUser(btn, username) {
+            if(confirm(`WARNING: Are you sure you want to delete user '${username}'?\nThis action cannot be undone.`)) {
+                let row = btn.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+                alert(`User '${username}' has been completely removed from the system.`);
             }
         }
-
-        const formsToPreserveScroll = document.querySelectorAll('form');
-        formsToPreserveScroll.forEach((form) => {
-            form.addEventListener('submit', () => {
-                sessionStorage.setItem(adminScrollKey, String(window.scrollY));
-            });
-        });
-
-        const savedScrollY = sessionStorage.getItem(adminScrollKey);
-        if (savedScrollY !== null) {
-            window.addEventListener('load', () => {
-                window.scrollTo({
-                    top: Number(savedScrollY),
-                    behavior: 'auto'
-                });
-                sessionStorage.removeItem(adminScrollKey);
-            });
+        
+        // Admin sends alert to DS Team
+        function pingDS() {
+            let message = prompt("Enter alert message for Data Scientist:", "Check the recent volatility in ETH dataset. Please retrain!");
+            
+            if (message != null && message !== "") {
+                alert(`[System Success] Alert sent to Data Scientist's dashboard.\nMessage: "${message}"`);
+            }
         }
-
-        bindUserTableActions();
-
-        const addUserForm = document.getElementById('add-user-form');
-        if (addUserForm) {
-            addUserForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const submitButton = addUserForm.querySelector('button[type="submit"]');
-                const originalHtml = submitButton.innerHTML;
-                const userTableBody = document.getElementById('user-table-body');
-                const resultsCount = document.getElementById('user-results-count');
-
-                submitButton.classList.add('is-loading');
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
-
-                try {
-                    const response = await fetch(addUserForm.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        },
-                        body: new URLSearchParams(new FormData(addUserForm)).toString()
-                    });
-                    const payload = await response.json();
-                    if (!response.ok || !payload.ok) {
-                        throw new Error(payload.message || 'Unable to create user.');
-                    }
-
-                    const emptyState = userTableBody.querySelector('.empty-state');
-                    if (emptyState) {
-                        userTableBody.innerHTML = '';
-                    }
-
-                    userTableBody.insertAdjacentHTML('afterbegin', buildUserRow(payload.user));
-                    bindUserTableActions(userTableBody);
-                    addUserForm.reset();
-
-                    const visibleRows = Array.from(userTableBody.querySelectorAll('tr'))
-                        .filter((row) => !row.querySelector('.empty-state')).length;
-                    resultsCount.textContent = `${visibleRows} result(s)`;
-                    showTransientFlash(payload.message, payload.category || 'success');
-                } catch (error) {
-                    showTransientFlash(error.message, 'error');
-                } finally {
-                    submitButton.classList.remove('is-loading');
-                    submitButton.innerHTML = originalHtml;
-                }
-            });
-        }
-
-        const ajaxLogSearchForm = document.querySelector('.ajax-log-search-form');
-        if (ajaxLogSearchForm) {
-            ajaxLogSearchForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const searchButton = ajaxLogSearchForm.querySelector('button[type="submit"]');
-                const originalButtonHtml = searchButton.innerHTML;
-                const params = new URLSearchParams(new FormData(ajaxLogSearchForm));
-
-                searchButton.classList.add('is-loading');
-                searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-                try {
-                    const response = await fetch(`${ajaxLogSearchForm.action}?${params.toString()}`, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-                    const payload = await response.json();
-                    if (!response.ok || !payload.ok) {
-                        throw new Error(payload.message || 'Unable to search audit logs.');
-                    }
-
-                    renderAuditLogs(payload.logs || []);
-                    const url = new URL(window.location.href);
-                    if (payload.search_query) {
-                        url.searchParams.set('q', payload.search_query);
-                    } else {
-                        url.searchParams.delete('q');
-                    }
-                    window.history.replaceState({}, '', url);
-                } catch (error) {
-                    showTransientFlash(error.message, 'error');
-                } finally {
-                    searchButton.classList.remove('is-loading');
-                    searchButton.innerHTML = originalButtonHtml;
-                }
-            });
-        }
-
-        const clearLogSearchButton = document.getElementById('clear-log-search');
-        if (clearLogSearchButton && ajaxLogSearchForm) {
-            clearLogSearchButton.addEventListener('click', async () => {
-                const searchInput = ajaxLogSearchForm.querySelector('input[name="q"]');
-                searchInput.value = '';
-                ajaxLogSearchForm.requestSubmit();
-            });
-        }
-
-        window.setInterval(refreshAuditLogs, 5000);
-        window.setInterval(refreshDashboardMetrics, 5000);
     </script>
 </body>
-
 </html>

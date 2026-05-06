@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: crypto_predict_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crypto_predict
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d crypto_predict"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crypto_predict_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/crypto_predict
+      SECRET_KEY: crypto-predict-dev-secret
+      DEFAULT_ADMIN_PASSWORD: Admin@123
+      DEFAULT_SCIENTIST_PASSWORD: Scientist@123
+      DEFAULT_USER_PASSWORD: User@123
+      HOST: 0.0.0.0
+      PORT: 5050
+      FLASK_DEBUG: 0
+    ports:
+      - "5050:5050"
+    volumes:
+      - app_models:/app/models
+      - app_uploads:/app/uploads
+
+volumes:
+  postgres_data:
+  app_models:
+  app_uploads:
