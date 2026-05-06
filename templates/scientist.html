@@ -6,32 +6,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <title>Data Scientist Control Panel</title>
-<<<<<<< HEAD
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-=======
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
->>>>>>> origin/basic-implement
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: #f0f2f5; color: #333; }
         .topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .topbar .logo h2 { color: #2b5876; margin: 0; display: flex; align-items: center; gap: 10px; }
         .topbar-right { display: flex; align-items: center; gap: 25px; }
-<<<<<<< HEAD
-        .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; }
-        .user { background: #e0eafc; padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2b5876; font-weight: 600; }
-        .main { padding: 40px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 3fr 5fr; gap: 30px; }
-        .panel { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-=======
         .btn-logout { text-decoration: none; color: #e74c3c; font-weight: 600; font-size: 16px; transition: 0.3s; }
         .btn-logout:hover { color: #c0392b; }
         .user { background: #e0eafc; padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 10px; color: #2b5876; font-weight: 600; }
         .main { padding: 40px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 3fr 5fr; gap: 30px; }
         .panel { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); min-width: 0; }
->>>>>>> origin/basic-implement
         .panel-title { font-size: 20px; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
         .metrics-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 25px; }
         .metric-box { padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #eee; }
@@ -40,26 +26,6 @@
         .metric-title { font-size: 14px; color: #7f8c8d; margin-bottom: 10px; font-weight: 500; }
         .status-box { background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; border: 1px dashed #ccc; }
         .status-box p { color: #666; margin-bottom: 20px; font-size: 15px; }
-<<<<<<< HEAD
-        .btn-retrain { background: linear-gradient(45deg, #2b5876, #4e4376); color: white; border: none; padding: 15px 30px; font-size: 16px; font-weight: 600; border-radius: 30px; cursor: pointer; display: flex; align-items: center; gap: 10px; margin: 0 auto; }
-        #loading { display: none; margin-top: 15px; color: #2b5876; font-weight: 500; }
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        .param-box { background: #f8f9fa; border: 1px solid #e1e8ed; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; }
-        .param-title { width: 100%; margin-bottom: 15px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        input[type="file"] { background: #fff; padding: 5px; width: 100%; }
-        input[type="file"]::file-selector-button { background: #2b5876; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-right: 15px; font-weight: 600; }
-        .param-box .form-group { width: 48%; margin-bottom: 10px; }
-        .full-width { grid-column: 1 / -1; }
-        .table-history { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .table-history th, .table-history td { padding: 15px; border-bottom: 1px solid #eee; text-align: left; font-size: 14px; }
-        .table-history th { background: #f8f9fa; color: #7f8c8d; font-weight: 600; text-transform: uppercase; font-size: 13px; }
-        .btn-download { background: #e0eafc; color: #2b5876; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold; }
-        .notif-wrapper { position: relative; cursor: pointer; margin-right: 20px; }
-        .notif-dropdown { display: none; position: absolute; top: 35px; right: -10px; width: 340px; background: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 1000; border: 1px solid #eee; overflow: hidden; text-align: left; cursor: default; }
-        .notif-header { background: #f8f9fa; padding: 12px 15px; font-weight: 600; font-size: 14px; border-bottom: 1px solid #eee; color: #2b5876; display: flex; justify-content: space-between; align-items: center; }
-        .notif-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; display: flex; gap: 12px; align-items: flex-start; }
-=======
         .btn-retrain { background: linear-gradient(45deg, #2b5876, #4e4376); color: white; border: none; padding: 15px 30px; font-size: 16px; font-weight: 600; border-radius: 30px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(78, 67, 118, 0.4); display: flex; align-items: center; gap: 10px; margin: 0 auto; }
         .btn-retrain:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(78, 67, 118, 0.6); }
         #loading { display: none; margin-top: 15px; color: #2b5876; font-weight: 500; }
@@ -84,7 +50,6 @@
         .notif-header { background: #f8f9fa; padding: 12px 15px; font-weight: 600; font-size: 14px; border-bottom: 1px solid #eee; color: #2b5876; display: flex; justify-content: space-between; align-items: center; }
         .notif-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; transition: 0.2s; display: flex; gap: 12px; align-items: flex-start; }
         .notif-item:hover { background: #f4f6f9; }
->>>>>>> origin/basic-implement
         .notif-item:last-child { border-bottom: none; }
         .notif-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
         .notif-icon.warning { background: #fdf5f4; color: #e74c3c; }
@@ -92,20 +57,6 @@
         .notif-icon.info { background: #e9f7ef; color: #27ae60; }
         .notif-content p { margin: 0; color: #444; line-height: 1.4; }
         .notif-time { font-size: 11px; color: #999; margin-top: 5px; display: block; font-weight: 500; }
-<<<<<<< HEAD
-        .notif-action { margin-top: 8px; }
-        .notif-action button { background: transparent; border: 1px solid #ccd6dd; border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer; color: #456; }
-        .flash-list { display: grid; gap: 12px; margin-bottom: 25px; }
-        .flash { padding: 14px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; }
-        .flash.success { background: #eaf8ef; color: #1d7f46; }
-        .flash.error { background: #fceceb; color: #c0392b; }
-        .empty-note { color: #7f8c8d; font-size: 13px; padding: 16px; }
-        .badge-info { display: inline-block; background: #eef3f8; color: #53718e; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-
-        @media (max-width: 980px) {
-            .main { grid-template-columns: 1fr; padding: 24px; }
-            .topbar { gap: 16px; flex-wrap: wrap; }
-=======
         .feature-panel { height: 320px; }
         .feature-panel canvas { max-height: 240px; }
         .badge-info { background: #e0eafc; color: #2b5876; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; display: inline-block; }
@@ -116,7 +67,6 @@
             .topbar-right { gap: 12px; }
             .user { display: none; }
             .param-box .form-group { width: 100%; }
->>>>>>> origin/basic-implement
         }
     </style>
 </head>
@@ -129,42 +79,14 @@
 
         <div class="topbar-right">
             <div class="notif-wrapper" onclick="toggleNotif(event)">
-<<<<<<< HEAD
-                <i class="fas fa-bell" style="font-size: 22px; color: #7f8c8d;" id="bell-icon"></i>
-                {% if unread_count > 0 %}
-                    <span style="position: absolute; top: -3px; right: -3px; background: #e74c3c; min-width: 18px; height: 18px; border-radius: 20px; border: 2px solid #fff; color: #fff; font-size: 10px; display: flex; align-items: center; justify-content: center; padding: 0 4px;">{{ unread_count }}</span>
-=======
                 <i class="fas fa-bell" style="font-size: 22px; color: #7f8c8d; transition: 0.2s;" id="bell-icon"></i>
                 {% if notif_count > 0 %}
                 <span style="position: absolute; top: -3px; right: -3px; background: #e74c3c; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #fff;"></span>
->>>>>>> origin/basic-implement
                 {% endif %}
 
                 <div class="notif-dropdown" id="notifMenu">
                     <div class="notif-header">
                         Notifications
-<<<<<<< HEAD
-                        <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px;">{{ unread_count }} New</span>
-                    </div>
-
-                    {% if notifications %}
-                        {% for item in notifications %}
-                            <div class="notif-item">
-                                <div class="notif-icon {{ item.type }}"><i class="fas {% if item.type == 'warning' %}fa-chart-line{% elif item.type == 'admin' %}fa-user-shield{% else %}fa-database{% endif %}"></i></div>
-                                <div class="notif-content">
-                                    <p><strong>{{ item.title }}:</strong> {{ item.message }}</p>
-                                    <span class="notif-time">{{ item.created_at }}{% if item.sender %} by {{ item.sender }}{% endif %}</span>
-                                    {% if not item.read %}
-                                        <form class="notif-action" action="{{ url_for('mark_notification_read', notification_id=item.id) }}" method="POST">
-                                            <button type="submit">Mark as Read</button>
-                                        </form>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="empty-note">No notifications available.</div>
-=======
                         <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px;">{{ notif_count }} New</span>
                     </div>
 
@@ -197,7 +119,6 @@
                             <p><strong>No notifications:</strong> The notification center is currently empty.</p>
                         </div>
                     </div>
->>>>>>> origin/basic-implement
                     {% endif %}
                 </div>
             </div>
@@ -213,24 +134,8 @@
     </div>
 
     <div class="main">
-<<<<<<< HEAD
-        <div class="full-width">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="flash-list">
-                        {% for category, message in messages %}
-                            <div class="flash {{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-        </div>
-
-        <div class="full-width" style="background: #fff3cd; border-left: 5px solid #f39c12; padding: 15px 20px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); gap: 16px; flex-wrap: wrap;">
-=======
         {% if latest_notice %}
         <div class="full-width" style="background: #eafaf1; border-left: 5px solid #27ae60; padding: 15px 20px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
->>>>>>> origin/basic-implement
             <div>
                 <h4 style="color: #1f9d55; margin-bottom: 5px; font-size: 15px;">
                     <i class="fas fa-check-circle"></i> Training Notification
@@ -249,21 +154,6 @@
                 <p style="font-size: 13px; color: #555; margin: 0;">
                     <strong>Automated Monitor:</strong> {{ drift_alert.automated_message }}
                 </p>
-<<<<<<< HEAD
-                {% if latest_admin_notification %}
-                    <p style="font-size: 13px; color: #555; margin-top: 5px;">
-                        <strong>Admin Message:</strong> <i>"{{ latest_admin_notification.message }}"</i> - {{ latest_admin_notification.created_at }}
-                    </p>
-                {% endif %}
-            </div>
-            {% if latest_admin_notification and not latest_admin_notification.read %}
-                <form action="{{ url_for('mark_notification_read', notification_id=latest_admin_notification.id) }}" method="POST">
-                    <button style="background: transparent; border: 1px solid #d68910; color: #d68910; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
-                        Mark as Read
-                    </button>
-                </form>
-            {% endif %}
-=======
                 <p style="font-size: 13px; color: #555; margin-top: 5px;">
                     <strong>Operations:</strong> <i>{{ drift_alert.admin_message }}</i>
                 </p>
@@ -271,7 +161,6 @@
             <button type="button" id="markReadBtn" style="background: transparent; border: 1px solid {% if drift_alert.level == 'warning' %}#d68910{% else %}#1f9d55{% endif %}; color: {% if drift_alert.level == 'warning' %}#d68910{% else %}#1f9d55{% endif %}; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;">
                 Mark as Read
             </button>
->>>>>>> origin/basic-implement
         </div>
 
         <div class="panel full-width">
@@ -308,43 +197,6 @@
             </div>
         </div>
 
-<<<<<<< HEAD
-        <div class="panel full-width">
-            <h3 class="panel-title"><i class="fas fa-history"></i> Model Registry & Training History</h3>
-            <table class="table-history">
-                <thead>
-                    <tr>
-                        <th>Version</th>
-                        <th>Date Trained</th>
-                        <th>Target Model</th>
-                        <th>Parameters (n_estimators / max_depth)</th>
-                        <th>R² Score</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>v2.1.0</strong></td>
-                        <td>2026-04-07 20:30</td>
-                        <td><span class="badge-info">Random Forest</span></td>
-                        <td>Trees: 100 | Depth: Auto</td>
-                        <td style="color: #27ae60; font-weight: bold;">0.985</td>
-                        <td><a href="#" class="btn-download"><i class="fas fa-download"></i> .pkl</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>v2.0.5</strong></td>
-                        <td>2026-03-25 14:15</td>
-                        <td><span class="badge-info" style="background: #fdf5f4; color: #e74c3c;">Decision Tree</span></td>
-                        <td>Min Split: 2 | Depth: 10</td>
-                        <td style="color: #e74c3c; font-weight: bold;">0.892</td>
-                        <td><a href="#" class="btn-download"><i class="fas fa-download"></i> .pkl</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-=======
->>>>>>> origin/basic-implement
         <div class="panel">
             <h3 class="panel-title"><i class="fas fa-chart-bar"></i> Model Evaluation Metrics</h3>
 
@@ -354,9 +206,6 @@
                     <div style="text-align: left; margin-top: 15px;">
                         <p style="margin-bottom: 8px;"><strong>RMSE:</strong> <span style="font-size: 18px; float: right;">${{ metrics.dt_rmse }}</span></p>
                         <p style="margin-bottom: 8px;"><strong>MAE:</strong> <span style="font-size: 18px; float: right;">${{ metrics.dt_mae }}</span></p>
-<<<<<<< HEAD
-                        <p style="margin-bottom: 2px;"><strong>R² Score:</strong><span style="font-size: 18px; font-weight: bold; color: #27ae60; float: right;">0.93</span></p>
-=======
                         <p style="margin-bottom: 2px;">
                             <strong>R<sup>2</sup> Score:</strong>
                             <span style="font-size: 18px; font-weight: bold; color: #27ae60; float: right;">{{ metrics.dt_r2 }}</span>
@@ -364,7 +213,6 @@
                         <div style="font-size: 11px; color: #7f8c8d; text-align: right; border-top: 1px dashed #ccc; padding-top: 2px;">
                             System Requirement: &ge; 0.85
                         </div>
->>>>>>> origin/basic-implement
                     </div>
                 </div>
 
@@ -373,9 +221,6 @@
                     <div style="text-align: left; margin-top: 15px;">
                         <p style="margin-bottom: 8px;"><strong>RMSE:</strong> <span style="font-size: 18px; color: #27ae60; float: right;">${{ metrics.rf_rmse }}</span></p>
                         <p style="margin-bottom: 8px;"><strong>MAE:</strong> <span style="font-size: 18px; color: #27ae60; float: right;">${{ metrics.rf_mae }}</span></p>
-<<<<<<< HEAD
-                        <p style="margin-bottom: 2px;"><strong>R² Score:</strong><span style="font-size: 18px; font-weight: bold; color: #27ae60; float: right;">0.93</span></p>
-=======
                         <p style="margin-bottom: 2px;">
                             <strong>R<sup>2</sup> Score:</strong>
                             <span style="font-size: 18px; font-weight: bold; color: #27ae60; float: right;">{{ metrics.rf_r2 }}</span>
@@ -383,7 +228,6 @@
                         <div style="font-size: 11px; color: #7f8c8d; text-align: right; border-top: 1px dashed #ccc; padding-top: 2px;">
                             System Requirement: &ge; 0.85
                         </div>
->>>>>>> origin/basic-implement
                     </div>
                 </div>
             </div>
@@ -399,12 +243,6 @@
             <div class="status-box">
                 <p><strong>Last Trained:</strong> <span style="color: #e67e22;">{{ metrics.last_trained }}</span></p>
                 <p>If data drift is detected, initiate a retraining sequence to update model weights with the latest market data.</p>
-<<<<<<< HEAD
-
-                <form id="retrainForm" action="/retrain" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
-                    <div class="tuning-form">
-                        <div class="form-group" style="border-bottom: 1px solid #eee; padding-bottom: 15px; text-align: left; margin-bottom: 15px;">
-=======
                 {% if retrain_error %}
                 <div style="margin: 0 auto 14px; max-width: 520px; background: #fdf2f2; border: 1px solid #f3c2c0; color: #c0392b; padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;">
                     <i class="fas fa-exclamation-circle"></i> {{ retrain_error }}
@@ -415,20 +253,13 @@
                     <input type="hidden" name="asset_symbol" value="{{ selected_symbol }}">
                     <div class="tuning-form">
                         <div class="form-group" style="border-bottom: 1px solid #eee; padding-bottom: 15px; text-align: left;">
->>>>>>> origin/basic-implement
                             <label><i class="fas fa-file-csv" style="color: #27ae60;"></i> Include Dataset <span class="badge-info">.csv files only</span></label>
                             <input type="file" name="dataset_file" class="form-control" accept=".csv" required>
                         </div>
 
-<<<<<<< HEAD
-                        <div class="form-group" style="text-align: left; margin-bottom: 15px;">
-                            <label><i class="fas fa-bullseye" style="color: #e67e22;"></i> Target Model to Retrain</label>
-                            <select name="target_model" id="target_model" class="form-control" onchange="toggleParams()" style="width: 100%; padding: 10px; border: 1px solid #ccd6dd; border-radius: 8px;">
-=======
                         <div class="form-group" style="text-align: left;">
                             <label><i class="fas fa-bullseye" style="color: #e67e22;"></i> Target Model to Retrain</label>
                             <select name="target_model" id="target_model" class="form-control" onchange="toggleParams()" style="width: 100%; padding: 10px 12px; border: 1px solid #d8e0e4; border-radius: 8px;">
->>>>>>> origin/basic-implement
                                 <option value="both">Retrain Both Models</option>
                                 <option value="dt">Decision Tree Only</option>
                                 <option value="rf">Random Forest Only</option>
@@ -437,15 +268,12 @@
 
                         <div id="dt_params" class="param-box">
                             <div class="param-title" style="color: #e74c3c;"><i class="fas fa-tree"></i> Decision Tree Parameters</div>
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/basic-implement
                             <div class="form-group">
                                 <label>Max Depth <span class="badge-info">max_depth</span></label>
                                 <input type="number" name="dt_max_depth" class="form-control" placeholder="None (Auto)" style="width: 100%; padding: 10px 12px; border: 1px solid #d8e0e4; border-radius: 8px;">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="margin-bottom: 0;">
                                 <label>Min Samples Split <span class="badge-info">min_samples_split</span></label>
                                 <input type="number" name="dt_min_samples" class="form-control" value="2" min="2" style="width: 100%; padding: 10px 12px; border: 1px solid #d8e0e4; border-radius: 8px;">
                             </div>
@@ -453,15 +281,12 @@
 
                         <div id="rf_params" class="param-box">
                             <div class="param-title" style="color: #27ae60;"><i class="fas fa-network-wired"></i> Random Forest Parameters</div>
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/basic-implement
                             <div class="form-group">
                                 <label>Number of Trees <span class="badge-info">n_estimators</span></label>
                                 <input type="number" name="rf_estimators" class="form-control" value="100" min="10" step="10" style="width: 100%; padding: 10px 12px; border: 1px solid #d8e0e4; border-radius: 8px;">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="margin-bottom: 0;">
                                 <label>Max Depth <span class="badge-info">max_depth</span></label>
                                 <input type="number" name="rf_max_depth" class="form-control" placeholder="None (Auto)" style="width: 100%; padding: 10px 12px; border: 1px solid #d8e0e4; border-radius: 8px;">
                             </div>
@@ -489,12 +314,9 @@
     <script id="feature-values" type="application/json">{{ feature_values | tojson }}</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script>
-<<<<<<< HEAD
-=======
         const featureLabels = JSON.parse(document.getElementById('feature-labels').textContent);
         const featureValues = JSON.parse(document.getElementById('feature-values').textContent);
 
->>>>>>> origin/basic-implement
         function showLoading() {
             document.querySelector('.btn-retrain').style.opacity = '0.5';
             document.getElementById('loading').style.display = 'block';
@@ -511,45 +333,12 @@
             } else if (selectedModel === 'dt') {
                 dtBox.style.display = 'flex';
                 rfBox.style.display = 'none';
-            } else {
+            } else if (selectedModel === 'rf') {
                 dtBox.style.display = 'none';
                 rfBox.style.display = 'flex';
             }
         }
 
-<<<<<<< HEAD
-        window.onload = function() {
-            toggleParams();
-
-            const ctxFeature = document.getElementById('featureChart').getContext('2d');
-            new Chart(ctxFeature, {
-                type: 'bar',
-                data: {
-                    labels: ['T-1 (Yesterday)', 'T-2', 'T-3', 'T-4', 'T-5', 'T-6'],
-                    datasets: [{
-                        label: 'Impact Weight (%)',
-                        data: [65.2, 15.8, 8.4, 5.1, 3.5, 2.0],
-                        backgroundColor: [
-                            'rgba(39, 174, 96, 0.8)',
-                            'rgba(41, 128, 185, 0.6)',
-                            'rgba(41, 128, 185, 0.6)',
-                            'rgba(41, 128, 185, 0.6)',
-                            'rgba(41, 128, 185, 0.6)',
-                            'rgba(41, 128, 185, 0.6)'
-                        ],
-                        borderRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    plugins: { legend: { display: false } },
-                    scales: { x: { beginAtZero: true, max: 100 } }
-                }
-            });
-        };
-=======
         async function submitRetrain(event) {
             event.preventDefault();
             showLoading();
@@ -575,7 +364,6 @@
 
             window.location.reload();
         }
->>>>>>> origin/basic-implement
 
         function toggleNotif(event) {
             const menu = document.getElementById('notifMenu');
@@ -591,27 +379,16 @@
             event.stopPropagation();
         }
 
-<<<<<<< HEAD
-        window.onclick = function() {
-            const menu = document.getElementById('notifMenu');
-            const bell = document.getElementById('bell-icon');
-            if (menu && menu.style.display === 'block') {
-=======
         window.onclick = function () {
             const menu = document.getElementById('notifMenu');
             const bell = document.getElementById('bell-icon');
             if (menu.style.display === 'block') {
->>>>>>> origin/basic-implement
                 menu.style.display = 'none';
                 bell.style.color = '#7f8c8d';
             }
         };
 
-<<<<<<< HEAD
-        document.getElementById('notifMenu').addEventListener('click', function(event) {
-=======
         document.getElementById('notifMenu').addEventListener('click', function (event) {
->>>>>>> origin/basic-implement
             event.stopPropagation();
         });
 
@@ -654,8 +431,4 @@
         });
     </script>
 </body>
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/basic-implement
 </html>
