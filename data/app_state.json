@@ -26,10 +26,62 @@
       "role": "admin",
       "display_name": "add1",
       "email": "add1@gmail.com",
-      "last_login": "Never"
+      "last_login": "2026-05-06 20:41"
+    },
+    "thai": {
+      "password": "123",
+      "role": "scientist",
+      "display_name": "thai",
+      "email": "thai@gmail.com",
+      "last_login": "2026-05-06 20:49"
     }
   },
   "notifications": [
+    {
+      "id": 9,
+      "type": "info",
+      "title": "Retraining completed",
+      "message": "Models retrained for BTC: DT, RF",
+      "sender": "Pipeline",
+      "created_at": "2026-05-06 21:05",
+      "read": false
+    },
+    {
+      "id": 8,
+      "type": "info",
+      "title": "Retraining completed",
+      "message": "Models retrained for BTC: DT, RF",
+      "sender": "Pipeline",
+      "created_at": "2026-05-06 21:04",
+      "read": false
+    },
+    {
+      "id": 7,
+      "type": "info",
+      "title": "Retraining completed",
+      "message": "Models retrained for BTC: DT, RF",
+      "sender": "Pipeline",
+      "created_at": "2026-05-06 21:01",
+      "read": true
+    },
+    {
+      "id": 6,
+      "type": "info",
+      "title": "Retraining completed",
+      "message": "Models retrained for BTC: DT, RF",
+      "sender": "Pipeline",
+      "created_at": "2026-05-06 20:59",
+      "read": true
+    },
+    {
+      "id": 5,
+      "type": "info",
+      "title": "Retraining completed",
+      "message": "Models retrained for BTC: DT, RF",
+      "sender": "Pipeline",
+      "created_at": "2026-05-06 20:52",
+      "read": true
+    },
     {
       "id": 4,
       "type": "admin",
@@ -37,7 +89,7 @@
       "message": "a",
       "sender": "admin",
       "created_at": "2026-04-24 10:51",
-      "read": false
+      "read": true
     },
     {
       "id": 1,
@@ -46,7 +98,7 @@
       "message": "BTC model accuracy dropped below threshold. Retrain recommended.",
       "sender": "Automated Monitor",
       "created_at": "2026-04-24 09:00",
-      "read": false
+      "read": true
     },
     {
       "id": 2,
@@ -55,7 +107,7 @@
       "message": "Check the recent volatility in ETH dataset.",
       "sender": "admin",
       "created_at": "2026-04-24 08:00",
-      "read": false
+      "read": true
     },
     {
       "id": 3,
@@ -68,6 +120,101 @@
     }
   ],
   "audit_logs": [
+    {
+      "timestamp": "2026-05-06 21:05",
+      "event": "Scientist retrained model(s): both using dataset BTC-USD.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 21:04",
+      "event": "Scientist retrained model(s): both using dataset BTC-USD.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 21:01",
+      "event": "Scientist marked all notifications as read",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 21:01",
+      "event": "Scientist retrained model(s): both using dataset BTC-USD.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:59",
+      "event": "Scientist retrained model(s): both using dataset BTC-USD.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:59",
+      "event": "Initialized real scientist model registry from BTC-USD.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:53",
+      "event": "Scientist marked all notifications as read",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:52",
+      "event": "Scientist retrained model(s): both using dataset BTC-USD.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:50",
+      "event": "Scientist marked all notifications as read",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:49",
+      "event": "Successful login for thai (Data Scientist)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:49",
+      "event": "User add1 logged out",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:49",
+      "event": "Admin created user thai with role Data Scientist",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:49",
+      "event": "Scientist retrained model(s): rf using dataset demo.csv",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:41",
+      "event": "Successful login for add1 (System Admin)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:41",
+      "event": "Successful login for add1 (System Admin)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-06 20:40",
+      "event": "Failed login attempt (username: Kien Nguyen)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-06 20:39",
+      "event": "Failed login attempt (username: kien.nguyen@hcmut.edu.vn)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-06 20:39",
+      "event": "Failed login attempt (username: thaipham@gmail.com)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-06 20:38",
+      "event": "Failed login attempt (username: admin)",
+      "status": "Warning"
+    },
     {
       "timestamp": "2026-04-24 11:15",
       "event": "User scientist predicted ETH (7 days)",
@@ -180,16 +327,169 @@
     }
   ],
   "scientist_metrics": {
-    "dt_rmse": "1,245.50",
-    "dt_mae": "980.20",
-    "rf_rmse": "850.75",
-    "rf_mae": "610.30",
-    "last_trained": "07/04/2026"
+    "dt_rmse": "963.34",
+    "dt_mae": "680.61",
+    "rf_rmse": "766.83",
+    "rf_mae": "552.78",
+    "last_trained": "06/05/2026",
+    "dt_r2": "0.9741",
+    "rf_r2": "0.9836"
   },
   "request_metrics": {
-    "total_requests": 69,
+    "total_requests": 179,
     "daily_counts": {
-      "2026-04-24": 69
+      "2026-04-24": 69,
+      "2026-05-06": 110
     }
-  }
+  },
+  "feature_importance": {
+    "labels": [
+      "T-1 (Yesterday)",
+      "T-2",
+      "T-3",
+      "T-4",
+      "T-5",
+      "T-6"
+    ],
+    "values": [
+      0.698818,
+      0.178547,
+      0.079118,
+      0.018917,
+      0.008733,
+      0.015866
+    ]
+  },
+  "model_registry": [
+    {
+      "id": 10,
+      "version": "btc_rf_20260506210525",
+      "trained_at": "2026-05-06 21:05",
+      "model_name": "rf",
+      "formatted_params": "Trees: 100 | Depth: 5",
+      "rmse": 766.8319400986762,
+      "mae": 552.7763845565447,
+      "r2": 0.9836204749752924,
+      "artifact_name": "btc_rf_20260506210525.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_rf_20260506210525.pkl",
+      "dataset_source": "20260506210524_BTC-USD.csv"
+    },
+    {
+      "id": 9,
+      "version": "btc_dt_20260506210524",
+      "trained_at": "2026-05-06 21:05",
+      "model_name": "dt",
+      "formatted_params": "Min Split: 2 | Depth: 4",
+      "rmse": 963.34413068838,
+      "mae": 680.6107365553495,
+      "r2": 0.9741498047524453,
+      "artifact_name": "btc_dt_20260506210524.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_dt_20260506210524.pkl",
+      "dataset_source": "20260506210524_BTC-USD.csv"
+    },
+    {
+      "id": 8,
+      "version": "btc_rf_20260506210451",
+      "trained_at": "2026-05-06 21:04",
+      "model_name": "rf",
+      "formatted_params": "Trees: 100 | Depth: 6",
+      "rmse": 754.8534579549184,
+      "mae": 549.4964396827917,
+      "r2": 0.984128198842419,
+      "artifact_name": "btc_rf_20260506210451.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_rf_20260506210451.pkl",
+      "dataset_source": "20260506210451_BTC-USD.csv"
+    },
+    {
+      "id": 7,
+      "version": "btc_dt_20260506210451",
+      "trained_at": "2026-05-06 21:04",
+      "model_name": "dt",
+      "formatted_params": "Min Split: 2 | Depth: 4",
+      "rmse": 963.34413068838,
+      "mae": 680.6107365553495,
+      "r2": 0.9741498047524453,
+      "artifact_name": "btc_dt_20260506210451.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_dt_20260506210451.pkl",
+      "dataset_source": "20260506210451_BTC-USD.csv"
+    },
+    {
+      "id": 6,
+      "version": "btc_rf_20260506210122",
+      "trained_at": "2026-05-06 21:01",
+      "model_name": "rf",
+      "formatted_params": "Trees: 100 | Depth: 6",
+      "rmse": 6498.511087871065,
+      "mae": 5218.237503988191,
+      "r2": -0.6699776085256146,
+      "artifact_name": "btc_rf_20260506210122.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_rf_20260506210122.pkl",
+      "dataset_source": "20260506210122_BTC-USD.csv"
+    },
+    {
+      "id": 5,
+      "version": "btc_dt_20260506210122",
+      "trained_at": "2026-05-06 21:01",
+      "model_name": "dt",
+      "formatted_params": "Min Split: 2 | Depth: 4",
+      "rmse": 6511.823574180513,
+      "mae": 5230.596215341041,
+      "r2": -0.6768266620730192,
+      "artifact_name": "btc_dt_20260506210122.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_dt_20260506210122.pkl",
+      "dataset_source": "20260506210122_BTC-USD.csv"
+    },
+    {
+      "id": 4,
+      "version": "btc_rf_20260506205948",
+      "trained_at": "2026-05-06 20:59",
+      "model_name": "rf",
+      "formatted_params": "Trees: 10 | Depth: 6",
+      "rmse": 6498.105896665244,
+      "mae": 5212.684606528348,
+      "r2": -0.6697693641642861,
+      "artifact_name": "btc_rf_20260506205948.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_rf_20260506205948.pkl",
+      "dataset_source": "20260506205948_BTC-USD.csv"
+    },
+    {
+      "id": 3,
+      "version": "btc_dt_20260506205948",
+      "trained_at": "2026-05-06 20:59",
+      "model_name": "dt",
+      "formatted_params": "Min Split: 3 | Depth: 5",
+      "rmse": 6357.0536364019,
+      "mae": 5094.2746446362435,
+      "r2": -0.5980658501430041,
+      "artifact_name": "btc_dt_20260506205948.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_dt_20260506205948.pkl",
+      "dataset_source": "20260506205948_BTC-USD.csv"
+    },
+    {
+      "id": 2,
+      "version": "btc_rf_20260506205931",
+      "trained_at": "2026-05-06 20:59",
+      "model_name": "rf",
+      "formatted_params": "Trees: 100 | Depth: Auto",
+      "rmse": 6564.663830454855,
+      "mae": 5283.000144511945,
+      "r2": -0.7041503259748831,
+      "artifact_name": "btc_rf_20260506205931.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_rf_20260506205931.pkl",
+      "dataset_source": "BTC-USD.csv"
+    },
+    {
+      "id": 1,
+      "version": "btc_dt_20260506205931",
+      "trained_at": "2026-05-06 20:59",
+      "model_name": "dt",
+      "formatted_params": "Min Split: 2 | Depth: Auto",
+      "rmse": 6871.78099717293,
+      "mae": 5630.651990930555,
+      "r2": -0.8673320004431484,
+      "artifact_name": "btc_dt_20260506205931.pkl",
+      "model_path": "E:\\BKU\\Master (thS)\\HTTM\\Assignment_final_v2\\Crypto_Currency_Prediction\\models\\btc_dt_20260506205931.pkl",
+      "dataset_source": "BTC-USD.csv"
+    }
+  ]
 }
