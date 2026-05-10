@@ -5,7 +5,7 @@
       "role": "admin",
       "display_name": "Kien Nguyen",
       "email": "kien.nguyen@hcmut.edu.vn",
-      "last_login": "Never"
+      "last_login": "2026-05-10 22:08"
     },
     "scientist": {
       "password": "123",
@@ -16,10 +16,10 @@
     },
     "kien": {
       "password": "123",
-      "role": "admin",
+      "role": "user",
       "display_name": "Thai Pham",
       "email": "thaipham@gmail.com",
-      "last_login": "Never"
+      "last_login": "2026-05-10 22:09"
     },
     "add1": {
       "password": "123",
@@ -120,6 +120,116 @@
     }
   ],
   "audit_logs": [
+    {
+      "timestamp": "2026-05-10 22:26",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:26",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:25",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:23",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:23",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:17",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:09",
+      "event": "User kien predicted BTC (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:09",
+      "event": "Successful login for kien (End User)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:08",
+      "event": "User admin logged out",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:08",
+      "event": "Admin changed role for kien from System Admin to End User",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:08",
+      "event": "Successful login for admin (System Admin)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:08",
+      "event": "Failed login attempt (username: scientist)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:07",
+      "event": "Failed login attempt (username: scientist)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:07",
+      "event": "Failed login attempt (username: scientist)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:07",
+      "event": "Failed login attempt (username: scientist)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:07",
+      "event": "Failed login attempt (username: kien)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:07",
+      "event": "User admin logged out",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:06",
+      "event": "Successful login for admin (System Admin)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-10 22:03",
+      "event": "Failed login attempt (username: kien)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:03",
+      "event": "Failed login attempt (username: kien)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:03",
+      "event": "Failed login attempt (username: Thai Pham)",
+      "status": "Warning"
+    },
+    {
+      "timestamp": "2026-05-10 22:02",
+      "event": "Failed login attempt (username: user)",
+      "status": "Warning"
+    },
     {
       "timestamp": "2026-05-06 21:05",
       "event": "Scientist retrained model(s): both using dataset BTC-USD.csv",
@@ -336,10 +446,11 @@
     "rf_r2": "0.9836"
   },
   "request_metrics": {
-    "total_requests": 179,
+    "total_requests": 231,
     "daily_counts": {
       "2026-04-24": 69,
-      "2026-05-06": 110
+      "2026-05-06": 110,
+      "2026-05-10": 52
     }
   },
   "feature_importance": {

@@ -665,6 +665,32 @@ def build_admin_dashboard_payload(state):
         "prediction_distribution": build_prediction_distribution(state["audit_logs"]),
     }
 
+def generate_date_labels(predict_days=1):
+    """
+    Automatically generates date arrays for the chart's X-axis.
+    Returns 2 arrays: 
+    - labels_1: Last 6 days (T-5 to Today)
+    - labels_2: Includes labels_1 and the future forecasted date
+    """
+    today = datetime.now()
+    labels_1 = []
+    
+    # Generate timestamps for the past 5 days
+    for i in range(5, 0, -1):
+        past_date = today - timedelta(days=i)
+        labels_1.append(past_date.strftime("%b %d"))
+        
+    # Append the current date (Today)
+    labels_1.append(f"Today ({today.strftime('%b %d')})")
+    
+    # Generate the timestamp for the forecasted date
+    labels_2 = labels_1.copy()
+    future_date = today + timedelta(days=predict_days)
+    labels_2.append(f"Forecast ({future_date.strftime('%b %d')})")
+    
+    return labels_1, labels_2
+    
+ 
 
 @app.before_request
 def track_request_metrics():
@@ -757,8 +783,16 @@ def predict():
     )
     write_state(state)
 
-    labels_1 = ["T-5", "T-4", "T-3", "T-2", "T-1", "Today"]
-    labels_2 = labels_1 + [f"Day +{days}"]
+    # Update label of chart
+    labels_1, labels_2 = generate_date_labels(days)
+    
+    # Calculate Percentage Change
+    current_val = tree_result[5]
+    dt_pred = tree_result[6]
+    rf_pred = rf_result[6]
+    
+    dt_pct = ((dt_pred - current_val) / current_val * 100) if current_val > 0 else 0
+    rf_pct = ((rf_pred - current_val) / current_val * 100) if current_val > 0 else 0
 
     return render_template(
         "test.html",
@@ -767,9 +801,11 @@ def predict():
         labels_2=labels_2,
         data_2=tree_result.tolist(),
         data_rf=rf_result.tolist(),
-        CurrentValue="{:,.2f}".format(tree_result[5]),
-        PredictValue_DT="{:,.2f}".format(tree_result[6]),
-        PredictValue_RF="{:,.2f}".format(rf_result[6]),
+        CurrentValue="{:,.2f}".format(current_val),
+        PredictValue_DT="{:,.2f}".format(dt_pred),
+        PredictValue_RF="{:,.2f}".format(rf_pred),
+        dt_pct=f"{dt_pct:+.2f}%",
+        rf_pct=f"{rf_pct:+.2f}%",
         model_choice=model_choice,
         next_time=days,
     )

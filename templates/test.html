@@ -44,7 +44,12 @@
                 {% if model_choice == 'dt' or model_choice == 'both' %}
                 <div class="card">
                     <div class="card-content">
-                        <div class="number" style="color: #e74c3c;">${{ PredictValue_DT }}</div>
+                        <div class="number" style="color: #e74c3c; display: flex; align-items: baseline; gap: 10px;">
+                            ${{ PredictValue_DT }}
+                            <span style="font-size: 16px; font-weight: bold; color: {% if '+' in dt_pct %}#27ae60{% else %}#e74c3c{% endif %};">
+                                {{ dt_pct }}
+                            </span>
+                        </div>
                         <div class="card-name">Decision Tree Prediction</div>
                     </div>
                     <div class="icon-box"><i class="fas fa-tree"></i></div>
@@ -54,7 +59,12 @@
                 {% if model_choice == 'rf' or model_choice == 'both' %}
                 <div class="card">
                     <div class="card-content">
-                        <div class="number" style="color: #27ae60;">${{ PredictValue_RF }}</div>
+                        <div class="number" style="color: #27ae60; display: flex; align-items: baseline; gap: 10px;">
+                            ${{ PredictValue_RF }}
+                            <span style="font-size: 18px; font-weight: bold; color: {% if '+' in rf_pct %}#27ae60{% else %}#e74c3c{% endif %};">
+                                {{ rf_pct }}
+                            </span>
+                        </div>
                         <div class="card-name">Random Forest Prediction</div>
                     </div>
                     <div class="icon-box"><i class="fas fa-network-wired"></i></div>
@@ -99,7 +109,7 @@
             </div>
             
             <div class="button-container" style="text-align: center; margin-top: 30px;">
-                <a href="/#section--2" class="button" style="text-decoration: none; display: inline-block;">Confirm</a>
+                <a href="/" class="button" style="text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #299b63; color: white; border-radius: 5px; font-weight: bold;">Confirm</a>
             </div>      
         </div>  
     </div>
