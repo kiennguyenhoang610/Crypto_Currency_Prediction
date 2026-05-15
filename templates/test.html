@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}" />
+    <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='img/favicon.png')}}"/>
+    <title>Prediction Results</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div>
+                <h2 style="color: #299b63; margin-bottom: 5px;">Prediction Results</h2>
+                <p style="color: #7f8c8d; font-size: 16px; margin: 0; font-weight: 600;">
+                    Time Horizon: Next <span style="color: #e74c3c; font-weight: bold; font-size: 18px;">{{ next_time }}</span> Days
+                </p>
+            </div>
+            
+            <div class="logo_right" style="display: flex; align-items: center; gap: 20px;">
+                <a href="/" style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: #299b63; font-weight: bold; font-size: 18px; white-space: nowrap;">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                
+                <a href="/logout" style="display: flex; align-items: center; gap: 6px; text-decoration: none; color: #e74c3c; font-weight: bold; font-size: 18px; white-space: nowrap;">
+                    Logout <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number">${{ CurrentValue }}</div>
+                        <div class="card-name">Current Price</div>
+                    </div>
+                    <div class="icon-box"><i class="fas fa-coins"></i></div>
+                </div>
+                
+                {% if model_choice == 'dt' or model_choice == 'both' %}
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number" style="color: #e74c3c; display: flex; align-items: baseline; gap: 10px;">
+                            ${{ PredictValue_DT }}
+                            <span style="font-size: 16px; font-weight: bold; color: {% if '+' in dt_pct %}#27ae60{% else %}#e74c3c{% endif %};">
+                                {{ dt_pct }}
+                            </span>
+                        </div>
+                        <div class="card-name">Decision Tree Prediction</div>
+                    </div>
+                    <div class="icon-box"><i class="fas fa-tree"></i></div>
+                </div>
+                {% endif %}
+
+                {% if model_choice == 'rf' or model_choice == 'both' %}
+                <div class="card">
+                    <div class="card-content">
+                        <div class="number" style="color: #27ae60; display: flex; align-items: baseline; gap: 10px;">
+                            ${{ PredictValue_RF }}
+                            <span style="font-size: 18px; font-weight: bold; color: {% if '+' in rf_pct %}#27ae60{% else %}#e74c3c{% endif %};">
+                                {{ rf_pct }}
+                            </span>
+                        </div>
+                        <div class="card-name">Random Forest Prediction</div>
+                    </div>
+                    <div class="icon-box"><i class="fas fa-network-wired"></i></div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="charts">
+                <div class="chart">
+                    <h2>Historical Price Trend</h2>
+                    <div style="position: relative; height: 350px; width: 100%;">
+                        <canvas id="lineChart_current"></canvas>
+                    </div>
+                </div>
+
+                {% if model_choice == 'dt' %}
+                <div class="chart">
+                    <h2>Predicted Price (Decision Tree)</h2>
+                    <div style="position: relative; height: 350px; width: 100%;">
+                        <canvas id="lineChart_predict"></canvas>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if model_choice == 'rf' %}
+                <div class="chart">
+                    <h2>Predicted Price (Random Forest)</h2>
+                    <div style="position: relative; height: 350px; width: 100%;">
+                        <canvas id="lineChart_predict"></canvas>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if model_choice == 'both' %}
+                <div class="chart">
+                    <h2>Model Comparison (DT vs RF)</h2>
+                    <div style="position: relative; height: 350px; width: 100%;">
+                        <canvas id="lineChart_predict"></canvas>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="button-container" style="text-align: center; margin-top: 30px;">
+                <a href="/" class="button" style="text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #299b63; color: white; border-radius: 5px; font-weight: bold;">Confirm</a>
+            </div>      
+        </div>  
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ccc;">
+        <p style="font-size: 13px; color: #7f8c8d; margin-bottom: 5px;">Does this prediction seem inaccurate?</p>
+        <button onclick="reportToDS()" style="background: transparent; border: none; color: #e74c3c; cursor: pointer; text-decoration: underline; font-size: 14px; font-weight: 600; transition: 0.2s;">
+            <i class="fas fa-flag"></i> Report issue to Data Science Team
+        </button>
+    </div>
+
+    <script>
+        function reportToDS() {
+            alert("Thank you! Your feedback regarding the prediction accuracy has been logged and sent to our Data Science team for review.");
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+
+    <script>
+        // Fetch data from Backend
+        var labels_1 = {{ labels_1 | tojson }};
+        var data_1 = {{ data_1 | tojson }};
+        
+        var labels_2 = {{ labels_2 | tojson }};
+        var data_dt = {{ data_2 | tojson }};
+        var data_rf = {{ data_rf | tojson }};
+
+        // 1. Render Current Price Chart
+        var ctx1 = document.getElementById('lineChart_current').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: labels_1,
+                datasets: [{
+                    label: 'Current Price ($)',
+                    data: data_1,
+                    backgroundColor: 'rgba(85,85,85, 0.2)',
+                    borderColor: 'rgb(41, 155, 99)', // Green
+                    borderWidth: 2,
+                    tension: 0.1
+                }]
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false 
+            }
+        });
+
+        // 2. Render Comparison Chart (DT vs RF)
+        // Dynamically build datasets based on selected mode
+        var datasets_compare = [];
+
+        // If DT or Both selected -> Add Red Line
+        if ("{{ model_choice }}" === "dt" || "{{ model_choice }}" === "both") {
+            datasets_compare.push({
+                label: 'Decision Tree Prediction ($)',
+                data: data_dt,
+                backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                borderColor: 'rgb(231, 76, 60)', 
+                borderWidth: 2,
+                tension: 0.1
+            });
+        }
+
+        // If RF or Both selected -> Add Green Line
+        if ("{{ model_choice }}" === "rf" || "{{ model_choice }}" === "both") {
+            datasets_compare.push({
+                label: 'Random Forest Prediction ($)',
+                data: data_rf,
+                backgroundColor: 'rgba(41, 155, 99, 0.1)',
+                borderColor: 'rgb(41, 155, 99)', 
+                borderWidth: 2,
+                tension: 0.1
+            });
+        }
+
+        var ctx2 = document.getElementById('lineChart_predict').getContext('2d');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: labels_2,
+                datasets: datasets_compare
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false 
+            }
+        });
+    </script>
+</body>
+</html>
