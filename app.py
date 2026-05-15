@@ -664,32 +664,6 @@ def build_admin_dashboard_payload(state):
         "traffic_chart": build_traffic_chart_data(state["request_metrics"]),
         "prediction_distribution": build_prediction_distribution(state["audit_logs"]),
     }
-
-def generate_date_labels(predict_days=1):
-    """
-    Automatically generates date arrays for the chart's X-axis.
-    Returns 2 arrays: 
-    - labels_1: Last 6 days (T-5 to Today)
-    - labels_2: Includes labels_1 and the future forecasted date
-    """
-    today = datetime.now()
-    labels_1 = []
-    
-    # Generate timestamps for the past 5 days
-    for i in range(5, 0, -1):
-        past_date = today - timedelta(days=i)
-        labels_1.append(past_date.strftime("%b %d"))
-        
-    # Append the current date (Today)
-    labels_1.append(f"Today ({today.strftime('%b %d')})")
-    
-    # Generate the timestamp for the forecasted date
-    labels_2 = labels_1.copy()
-    future_date = today + timedelta(days=predict_days)
-    labels_2.append(f"Forecast ({future_date.strftime('%b %d')})")
-    
-    return labels_1, labels_2
-    
  
 
 @app.before_request
@@ -784,7 +758,8 @@ def predict():
     write_state(state)
 
     # Update label of chart
-    labels_1, labels_2 = generate_date_labels(days)
+    labels_1 = ["T-5", "T-4", "T-3", "T-2", "T-1", "Today"]
+    labels_2 = labels_1 + [f"Day +{days}"]
     
     # Calculate Percentage Change
     current_val = tree_result[5]
