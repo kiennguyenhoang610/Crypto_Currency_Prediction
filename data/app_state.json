@@ -19,7 +19,7 @@
       "role": "user",
       "display_name": "Thai Pham",
       "email": "thaipham@gmail.com",
-      "last_login": "2026-05-15 22:17"
+      "last_login": "2026-05-16 11:39"
     },
     "add1": {
       "password": "123",
@@ -120,6 +120,31 @@
     }
   ],
   "audit_logs": [
+    {
+      "timestamp": "2026-05-16 11:42",
+      "event": "User kien logged out",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-16 11:41",
+      "event": "User kien predicted ETH (5 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-16 11:40",
+      "event": "User kien predicted BTC (1 days)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-16 11:39",
+      "event": "Successful login for kien (End User)",
+      "status": "Success"
+    },
+    {
+      "timestamp": "2026-05-16 11:28",
+      "event": "User kien logged out",
+      "status": "Success"
+    },
     {
       "timestamp": "2026-05-15 22:18",
       "event": "User kien logged out",
@@ -476,12 +501,13 @@
     "rf_r2": "0.9836"
   },
   "request_metrics": {
-    "total_requests": 246,
+    "total_requests": 261,
     "daily_counts": {
       "2026-04-24": 69,
       "2026-05-06": 110,
       "2026-05-10": 52,
-      "2026-05-15": 15
+      "2026-05-15": 15,
+      "2026-05-16": 15
     }
   },
   "feature_importance": {
